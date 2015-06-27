@@ -1,0 +1,37 @@
+{
+	"uid": "club-manager",
+	"name": "Sports club manager.",
+	"description": "Create and manage teams in a club",
+	"version": "0.0.1",
+	"pb_version": "0.4.x",
+	"icon": "/imgs/sample.ico",
+	"author": {
+		"name": "Ilkka Veima",
+		"email": "ilkka.veima@gmail.com",
+		"contributors": [
+			{
+				"name": "Ilkka Veima",
+				"email": "ilkka.veima@gmail.com"
+			}
+		]
+	},
+	"settings": [
+		{
+			"name": "rxb_club_name",
+			"value": "My club"
+		}	
+	],
+	"permissions":{},
+	"main_module": {
+		"path": "club_manager.js"
+	},
+	"theme": {
+		"settings": [],
+		"content_templates": [
+			{
+				"file": "index",
+				"name": "custom_content_template"
+			}
+		]
+	}
+}
