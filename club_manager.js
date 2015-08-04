@@ -5,6 +5,9 @@ module.exports = function ClubManagerPlugin(pb){
 	// PencilBlue dependencies
 	var util = pb.util;
 
+    // Club manager dependencies
+    var cmPlayer = require('./cm_player.js');
+
 	/* Plugin to manage sports club content */
 	function ClubManager(){}
 
@@ -14,35 +17,12 @@ module.exports = function ClubManagerPlugin(pb){
 	 * The result shoud be TRUE for success and FALSE on failure.
 	 */
 	ClubManager.onInstall = function(cb) {
-		// Create player custom object.
 		var cos = new pb.CustomObjectService();
-			cos.loadTypeByName('cm_player', function(err, playerType){
-				if(util.isError(err))
-				{
-					// Call to custom object service failed.
-					return cb(err, false);
-				}
-				else if(!util.isNullOrUndefined(playerType))
-				{
-					// Custom type already exists.
-					return cb(new Error("cm_player custom object already exists."),
-								false);
-				}
-
-				var player = {
-					name: 'cm_player',
-					fields: {
-						name: { field_type: 'text' },
-						number: { field_type: 'text' },
-						// Media is mandatory, not working yet //profilePicture: { field_type: 'peer_object', object_type: 'media' },
-					description: { field_type: 'wysiwyg' }
-				}
-			};
-			
-			cos.saveType(player, function(err, result){
-				return cb(err, !util.isError(err));
-			});
-		});
+		
+		// Create player custom object.
+		var player = cmPlayer();
+ 		return player.install(cb, cos, util);
+		
 		// TODO Create team custom object. 
 		// TODO Create club custom object.
 	};

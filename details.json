@@ -17,7 +17,7 @@
 	},
 	"settings": [
 		{
-			"name": "rxb_club_name",
+			"name": "club_name",
 			"value": "My club"
 		}	
 	],
