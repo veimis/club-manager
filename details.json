@@ -1,7 +1,7 @@
-{
-	"uid": "club-manager",
-	"name": "Sports club manager.",
-	"description": "Create and manage teams in a club",
+	{
+		"uid": "club-manager",
+		"name": "Sports club manager.",
+		"description": "Create and manage teams in a club. To display the team page create a link to /club-manager/team",
 	"version": "0.0.1",
 	"pb_version": "0.4.x",
 	"icon": "/imgs/sample.ico",
