@@ -7,19 +7,27 @@ module.exports = function(pb) {
   
   // Create the controller
   function TeamController(){};
+  
   // Inherits from base controller: accessors for template service, 
   // localization service, request and response handlers.
   util.inherits(TeamController, BaseController);
 
   TeamController.prototype.render = function(cb) {
-    var output = {
+    var self = this;
+    this.getPlayers(function(err, data) {
+      // TODO: create angular controller and display results in a list
+      self.ts.registerLocal('cm_test', function(flag, cb) {
+        cb(null, data[0].name);
+      });
+      var output = {
       content_type: 'text/html',
       code: 200
-    };
-    this.ts.load('team', function(error, result) {
-      output.content = result;
-      cb(output);
-    });
+      };
+      self.ts.load('team', function(error, result) {
+        output.content = result;
+	    cb(output);
+	  });
+    }); 
   };
   
   TeamController.getRoutes = function(cb) {
@@ -31,6 +39,22 @@ module.exports = function(pb) {
     }];
     cb(null, routes);
   };
+
+  TeamController.prototype.getPlayers = function getPlayers(cb) {
+    var cos = new pb.CustomObjectService();
+    // TODO use async
+    cos.loadTypeByName('cm_player', function(err, playerType) {
+      if(util.isError(err)) {
+        return cb(err, false);
+      }
+      cos.findByType(playerType._id.toString(), function(err, result) {
+        if(util.isError(err)) {
+          return cb(err, false);
+        }
+        return cb(null, result);
+      });
+    });
+  }
 
   return TeamController;
 };
