@@ -15,17 +15,20 @@ module.exports = function(pb) {
   TeamController.prototype.render = function(cb) {
     var self = this;
     this.getPlayers(function(err, data) {
-      // TODO: create angular controller and display results in a list
-      self.ts.registerLocal('cm_test', function(flag, cb) {
-        cb(null, data[0].name);
+      self.ts.registerLocal('angular', function(flag, cb) {
+        var objects = {
+          players: data,
+          test: false};
+        var angularData = pb.ClientJs.getAngularController(objects, []);
+        cb(null, angularData);
       });
-      var output = {
-      content_type: 'text/html',
-      code: 200
-      };
-      self.ts.load('team', function(error, result) {
-        output.content = result;
-	    cb(output);
+ 
+     self.ts.load('team', function(error, result) {
+        if(util.isError(error)) {
+          throw error;
+        }
+
+	    cb({content: result});
 	  });
     }); 
   };
@@ -47,7 +50,8 @@ module.exports = function(pb) {
       if(util.isError(err)) {
         return cb(err, false);
       }
-      cos.findByType(playerType._id.toString(), function(err, result) {
+      var selection = ['name', 'number', 'description'];
+      cos.findByType(playerType._id.toString(), {select: selection}, function(err, result) {
         if(util.isError(err)) {
           return cb(err, false);
         }
