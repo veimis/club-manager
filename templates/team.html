@@ -1,9 +1,21 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script type="text/javascript" src="^angular_src^"></script>
+    <script type="text/javascript" src="^angular_route_src^"></script>
     <title>^site_name^</title>
   </head>
-  <body>
-    ^cm_test^
+  <body ng-app="pencilblueApp" ng-controller="PencilBlueController">
+    <div>
+      <table>
+        <tr ng-repeat="player in players">
+          <td>{{player.name}}</td>
+          <td>{{player.number}}</td>
+          <td>{{player.description}}</td>
+        </tr>
+      </table>
+      {{players}}
+    </div>
+    ^angular^
   </body>
 </html>
