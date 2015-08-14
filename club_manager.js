@@ -35,30 +35,11 @@ module.exports = function ClubManagerPlugin(pb){
 	 * The result should be TRUE for success and FALSE on failure.
 	 */
 	ClubManager.onUninstall = function(cb) {
-		// TODO Remove player custom object and clear db.
 		var cos = new pb.CustomObjectService();
+		var player = cmPlayer();
+        player.uninstall(cos, util, cb);
 
-		cos.loadTypeByName('cm_player', function(err, playerType) {
-			if(util.isNullOrUndefined(playerType))
-			{
-				return cb(err, !util.isError(err));
-			}
-			
-			// Clear database
-			cos.deleteForType(playerType, function(err, result)
-			{
-				if(util.isError(err))
-				{
-					return cb(err, !util.isError(err));
-				}
-				// Delete custom object type.
-				cos.deleteTypeById(playerType._id.toString(), function(err)
-				{
-					return cb(err, !util.isError(err));	
-				});
-			});
-		});
-		// TODO Remove team custom object and clear db.
+     	// TODO Remove team custom object and clear db.
 		// TODO Remove club custom object and clear db.
 	};
 

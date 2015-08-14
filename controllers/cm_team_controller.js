@@ -24,7 +24,8 @@ module.exports = function(pb) {
       self.ts.registerLocal('angular', function(flag, cb) {
         var objects = {
           players: data,
-          test: false};
+          test: false
+        };
         var angularData = pb.ClientJs.getAngularController(objects, []);
         cb(null, angularData);
       });
@@ -33,9 +34,9 @@ module.exports = function(pb) {
         if(util.isError(error)) {
           throw error;
         }
-
 	    cb({content: result});
 	  });
+
     }); 
   };
   
@@ -45,7 +46,7 @@ module.exports = function(pb) {
       path: "/club-manager/team",
       auth_required: false,
       content_type: 'text/html'
-      // function is not defined, defaults to render
+      // function is not defined, defaults to render()
     }];
     cb(null, routes);
   };
