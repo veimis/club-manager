@@ -6,7 +6,7 @@ module.exports = function ClubManagerPlugin(pb){
 	var util = pb.util;
 
     // Club manager dependencies
-    var cmPlayer = require('./cm_player.js');
+    var cmPlayer = require('cm_player_module');
 
 	/* Plugin to manage sports club content */
 	function ClubManager(){}
@@ -21,7 +21,7 @@ module.exports = function ClubManagerPlugin(pb){
 		
 		// Create player custom object.
 		var player = cmPlayer();
- 		return player.install(cb, cos, util);
+ 		return player.install(cos, util, cb);
 		
 		// TODO Create team custom object. 
 		// TODO Create club custom object.

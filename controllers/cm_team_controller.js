@@ -1,7 +1,7 @@
 // Controller module for the team page showing the players of the club
 
 // Dependencies
-var async = require('async');
+var cmPlayer = require('cm_player_module');
 
 module.exports = function(pb) {
   // Pencilblue dependencies
@@ -15,9 +15,12 @@ module.exports = function(pb) {
   // localization service, request and response handlers.
   util.inherits(TeamController, BaseController);
 
+  // Render team template
   TeamController.prototype.render = function(cb) {
     var self = this;
-    this.getPlayers(function(err, data) {
+    var cos = new pb.CustomObjectService();
+    var player = cmPlayer();
+    player.getPlayers(cos, util, function(err, data) {
       self.ts.registerLocal('angular', function(flag, cb) {
         var objects = {
           players: data,
@@ -42,30 +45,10 @@ module.exports = function(pb) {
       path: "/club-manager/team",
       auth_required: false,
       content_type: 'text/html'
+      // function is not defined, defaults to render
     }];
     cb(null, routes);
   };
-
-  TeamController.prototype.getPlayers = function getPlayers(cb) {
-    var cos = new pb.CustomObjectService();
-    // Get player type id and use it to find all player objects,
-    // finally call cb
-    async.waterfall([
-      function getPlayerType(cb){
-        cos.loadTypeByName('cm_player', function(err, playerType) {
-          return cb(err, playerType._id);
-        });
-      },
-      function getPlayerObjects(typeId, cb) {
-        var selection = ['name', 'number', 'description'];
-        cos.findByType(typeId.toString(), {select: selection}, 
-          function(err, result) {
-            return cb(err, result);
-          }
-        );
-      }
-    ], cb);
-  }
 
   return TeamController;
 };
