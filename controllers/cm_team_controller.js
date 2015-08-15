@@ -20,7 +20,14 @@ module.exports = function(pb) {
     var self = this;
     var cos = new pb.CustomObjectService();
     var player = cmPlayer();
+ 
+    // Query all players
     player.getPlayers(cos, util, function(err, data) {
+      if(util.isError(err)) {
+        throw err;
+      }
+
+      // Register angular controller
       self.ts.registerLocal('angular', function(flag, cb) {
         var objects = {
           players: data,
@@ -29,24 +36,24 @@ module.exports = function(pb) {
         var angularData = pb.ClientJs.getAngularController(objects, []);
         cb(null, angularData);
       });
- 
-      self.ts.load('team', function(error, result) {
-        if(util.isError(error)) {
-          throw error;
+      // Load team template
+      self.ts.load('team', function(err, result) {
+        if(util.isError(err)) {
+          throw err;
         }
 	    cb({content: result});
 	  });
-
     }); 
   };
   
+  // Register routes
   TeamController.getRoutes = function(cb) {
     var routes = [{
       method: 'get',
       path: "/club-manager/team",
       auth_required: false,
       content_type: 'text/html'
-      // function is not defined, defaults to render()
+      // handler is not defined, defaults to render()
     }];
     cb(null, routes);
   };
