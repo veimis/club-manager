@@ -52,14 +52,37 @@ module.exports = function(pb) {
   
   // Register routes
   TeamController.getRoutes = function(cb) {
-    var routes = [{
-      method: 'get',
-      path: "/club-manager/team",
-      auth_required: false,
-      content_type: 'text/html'
-      // handler is not defined, defaults to render()
-    }];
+    var routes = [
+      {
+        method: 'get',
+        path: '/club-manager/team',
+        auth_required: false,
+        content_type: 'text/html'
+        // handler is not defined, defaults to render()
+      },
+      {
+        method: 'get',
+        path: '/club-manager/admin',
+        auth_required: true,
+        content_type: 'text/html',
+        handler: 'clubManagerSettings'
+      }
+    ];
     cb(null, routes);
+  };
+ 
+  // Render settings
+  TeamController.prototype.clubManagerSettings = function(cb) {
+    var self = this;
+    
+    var angularObjects = pb.ClientJs.getAngularObjects({
+      navigation: pb.AdminNavigation.get(self.session, ['dashboard'], self.localizationService), 
+      access: self.session.authentication.admin_level
+    });
+    self.ts.registerLocal('angular_objects', new pb.TemplateValue(angularObjects, false));  
+    self.ts.load('/admin/club_manager_admin', function(err, result) {
+      cb({content: result});
+    });
   };
 
   return TeamController;

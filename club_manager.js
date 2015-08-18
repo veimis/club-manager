@@ -53,7 +53,24 @@ module.exports = function ClubManagerPlugin(pb){
 	 * The result should be TRUE for success and FALSE on failure.
 	 */
 	ClubManager.onStartup = function(cb) {
-		// Modify admin navigation panel if needed.
+		// Modify admin navigation 
+        // TODO create and open admin views on the panel
+        pb.AdminNavigation.add({
+          id: 'club-manager',
+          title: 'Club Manger',
+          icon: 'cogs',
+          href: '/club-manager/admin',
+          access: pb.SecurityService.ACCESS_EDITOR //,
+//          children: [
+//            {
+//              id: 'club-manager-team-admin',
+//              title: 'Team administration',
+//              href: '/club-manager/admin/team',
+//              access: pb.SecurityService.ACCESS_EDITOR
+//            }
+//          ]
+        });       
+        
 		cb(null, true);
 	};
 
