@@ -57,18 +57,10 @@ module.exports = function ClubManagerPlugin(pb){
         // TODO create and open admin views on the panel
         pb.AdminNavigation.add({
           id: 'club-manager',
-          title: 'Club Manger',
+          title: 'Club manager',
           icon: 'cogs',
           href: '/club-manager/admin',
-          access: pb.SecurityService.ACCESS_EDITOR //,
-//          children: [
-//            {
-//              id: 'club-manager-team-admin',
-//              title: 'Team administration',
-//              href: '/club-manager/admin/team',
-//              access: pb.SecurityService.ACCESS_EDITOR
-//            }
-//          ]
+          access: pb.SecurityService.ACCESS_EDITOR 
         });       
         
 		cb(null, true);

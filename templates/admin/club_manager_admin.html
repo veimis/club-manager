@@ -1,6 +1,24 @@
 ^tmp_admin=head^
-<div>
-Hello there, welcome to club manager!
+<div class="col-md-9">
+    ^tmp_admin=elements=error_success^
+    ^tmp_admin=elements=sub_nav^
+    ^tmp_admin=elements=tab_nav^
+    <div class="tab-content">
+        <div class="tab-pane active" id="themes">
+		    Teams
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Tab1
+                </div>
+                <div class="table_container">
+                   Table container 
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="site_logo">
+           tab2 
+        </div>
+    </div>
 </div>
-^tmp_angular=admin=index^
-^tmp_footer^
+^angular^
+^tmp_admin=footer^

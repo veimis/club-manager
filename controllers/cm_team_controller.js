@@ -17,9 +17,8 @@ module.exports = function(pb) {
 
   // Render team template
   // Render is executed within a domain context and errors thrown 
-  // therefore errors will be handled and result in an error page.
+  //  will result in an error page.
   // cb = callback(result)
-  // TODO how does call back work for double self.func() calls?
   TeamController.prototype.render = function(cb) {
     var self = this;
     var cos = new pb.CustomObjectService();
@@ -35,7 +34,6 @@ module.exports = function(pb) {
       self.ts.registerLocal('angular', function(flag, cb) {
         var objects = {
           players: data,
-          test: false
         };
         var angularData = pb.ClientJs.getAngularController(objects, []);
         cb(null, angularData);
@@ -59,32 +57,11 @@ module.exports = function(pb) {
         auth_required: false,
         content_type: 'text/html'
         // handler is not defined, defaults to render()
-      },
-      {
-        method: 'get',
-        path: '/club-manager/admin',
-        auth_required: true,
-        content_type: 'text/html',
-        handler: 'clubManagerSettings'
       }
     ];
     cb(null, routes);
   };
  
-  // Render settings
-  TeamController.prototype.clubManagerSettings = function(cb) {
-    var self = this;
-    
-    var angularObjects = pb.ClientJs.getAngularObjects({
-      navigation: pb.AdminNavigation.get(self.session, ['dashboard'], self.localizationService), 
-      access: self.session.authentication.admin_level
-    });
-    self.ts.registerLocal('angular_objects', new pb.TemplateValue(angularObjects, false));  
-    self.ts.load('/admin/club_manager_admin', function(err, result) {
-      cb({content: result});
-    });
-  };
-
   return TeamController;
 };
 
