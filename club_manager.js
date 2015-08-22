@@ -60,7 +60,23 @@ module.exports = function ClubManagerPlugin(pb){
           title: 'Club manager',
           icon: 'cogs',
           href: '/club-manager/admin',
-          access: pb.SecurityService.ACCESS_EDITOR 
+          access: pb.SecurityService.ACCESS_EDITOR,
+          children: [
+            {
+              id: 'club-manager-management',
+              title: 'Management',
+              icon: 'cogs',
+              href: '/club-manager/admin',
+              access: pb.SecurityService.ACCESS_EDITOR
+            },
+            {
+              id: 'club-manager-match-report',
+              title: 'Match reports',
+              icon: 'cogs',
+              href: '/club-manager/admin/match-report',
+              access: pb.SecurityService.ACCESS_EDITOR
+            }
+          ]
         });       
         
 		cb(null, true);

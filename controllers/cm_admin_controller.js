@@ -50,6 +50,7 @@ module.exports = function(pb) {
         // handler is not defined, defaults to render()
       }
     ];
+
     cb(null, routes);
   }; 
 
