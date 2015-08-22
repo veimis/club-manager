@@ -1,7 +1,7 @@
 // Controller module for the team page showing the players of the club
 
 // Dependencies
-var cmPlayer = require('cm_player_module');
+var cmPlayer = require('player');
 
 module.exports = function(pb) {
   // Pencilblue dependencies

@@ -5,11 +5,13 @@ module.exports = function ClubManagerPlugin(pb){
 	// PencilBlue dependencies
 	var util = pb.util;
 
-    // Club manager dependencies
-    var cmPlayer = require('cm_player_module');
+  // Club manager dependencies
+  var cmPlayer = require('player');
 
 	/* Plugin to manage sports club content */
 	function ClubManager(){}
+
+  var TOP_MENU = 'club-manager';
 
 	/* Called when the application is being installed for the first time.
 	 * @param cb A callback that must be called upon completion. 
@@ -54,32 +56,34 @@ module.exports = function ClubManagerPlugin(pb){
 	 */
 	ClubManager.onStartup = function(cb) {
 		// Modify admin navigation 
-        // TODO create and open admin views on the panel
-        pb.AdminNavigation.add({
-          id: 'club-manager',
-          title: 'Club manager',
-          icon: 'cogs',
-          href: '/club-manager/admin',
-          access: pb.SecurityService.ACCESS_EDITOR,
-          children: [
-            {
-              id: 'club-manager-management',
-              title: 'Management',
-              icon: 'cogs',
-              href: '/club-manager/admin',
-              access: pb.SecurityService.ACCESS_EDITOR
-            },
-            {
-              id: 'club-manager-match-report',
-              title: 'Match reports',
-              icon: 'cogs',
-              href: '/club-manager/admin/match-report',
-              access: pb.SecurityService.ACCESS_EDITOR
-            }
-          ]
-        });       
+    // TODO create and open admin views on the panel
+    pb.AdminNavigation.add({
+      id: TOP_MENU,
+      title: 'Club manager',
+      icon: 'cog',
+      href: '/club-manager/admin',
+      access: pb.SecurityService.ACCESS_EDITOR,
+    }); 
+
+    // Add management to navigation
+    pb.AdminNavigation.addChild(TOP_MENU, {
+      id: 'club-manager-management',
+      title: 'Management',
+      icon: 'cogs',
+      href: '/club-manager/admin',
+      access: pb.SecurityService.ACCESS_EDITOR
+    });
+
+    // Add match reports to navigation
+    pb.AdminNavigation.addChild(TOP_MENU, {
+      id: 'club-manager-match-report',
+      title: 'Match reports',
+      icon: 'file-o',
+      href: '/club-manager/admin/match-report',
+      access: pb.SecurityService.ACCESS_EDITOR     
+    }); 
         
-		cb(null, true);
+    cb(null, true);
 	};
 
 	/* Called when the application is gracefully shutting down.

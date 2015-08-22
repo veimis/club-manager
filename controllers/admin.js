@@ -34,7 +34,7 @@ module.exports = function(pb) {
       cb(null, angularData);
     }); 
       
-    self.ts.load('/admin/club_manager_admin', function(err, result) {
+    self.ts.load('/admin/admin', function(err, result) {
       cb({content: result});
     });
   };
