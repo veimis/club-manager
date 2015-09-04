@@ -1,4 +1,4 @@
-// Controller module for the team page showing the players of the club
+// Controller module for a team page showing the players of the club
 
 // Dependencies
 var cmPlayer = require('player');
@@ -30,20 +30,24 @@ module.exports = function(pb) {
       }
 
       // Register angular controller
-      self.ts.registerLocal('angular', function(flag, cb) {
+      var ok = self.ts.registerLocal('angular', function(flag, cb) {
         var objects = {
-          players: data,
+          players: data
         };
         var angularData = pb.ClientJs.getAngularController(objects, []);
         cb(null, angularData);
       });
+			if(!ok) {
+				throw new Error('Failed to register angular controller');
+			}
+			
       // Load team template
       self.ts.load('team', function(err, result) {
         if(util.isError(err)) {
           throw err;
         }
-	    cb({content: result});
-	  });
+	    	cb({content: result});
+	  	});
     }); 
   };
   
