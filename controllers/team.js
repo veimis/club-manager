@@ -22,10 +22,9 @@ module.exports = function(pb) {
   TeamController.prototype.render = function(cb) {
     var self = this;
     var cos = new pb.CustomObjectService();
-    var player = cmPlayer();
  
     // Query all players
-    player.getPlayers(cos, util, function(err, data) {
+    cmPlayer.getPlayers(cos, util, function(err, data) {
       if(util.isError(err)) {
         throw err;
       }

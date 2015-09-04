@@ -17,7 +17,7 @@ module.exports = function(pb) {
   
   // Render admin page
   // Render is executed within a domain context and errors thrown 
-  // therefore errors will be handled and result in an error page.
+  // will be handled and result in an error page.
   // cb = callback(result)
   AdminController.prototype.render = function(cb) {
     var self = this;

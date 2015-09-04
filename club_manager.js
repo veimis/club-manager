@@ -22,8 +22,7 @@ module.exports = function ClubManagerPlugin(pb){
 		var cos = new pb.CustomObjectService();
 		
 		// Create player custom object.
-		var player = cmPlayer();
- 		return player.install(cos, util, cb);
+ 		return cmPlayer.install(cos, util, cb);
 		
 		// TODO Create team custom object. 
 		// TODO Create club custom object.
@@ -37,11 +36,12 @@ module.exports = function ClubManagerPlugin(pb){
 	 * The result should be TRUE for success and FALSE on failure.
 	 */
 	ClubManager.onUninstall = function(cb) {
-		var cos = new pb.CustomObjectService();
-		var player = cmPlayer();
-        player.uninstall(cos, util, cb);
+		pb.AdminNavigation.remove(TOP_MENU);
 
-     	// TODO Remove team custom object and clear db.
+		var cos = new pb.CustomObjectService();
+		return cmPlayer.uninstall(cos, util, cb);
+
+   	// TODO Remove team custom object and clear db.
 		// TODO Remove club custom object and clear db.
 	};
 
