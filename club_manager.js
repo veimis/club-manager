@@ -1,5 +1,8 @@
 // Main module for club manager plugin.
 
+// Dependencies
+var async = require('async');
+
 module.exports = function ClubManagerPlugin(pb){
 
 	// PencilBlue dependencies
@@ -7,6 +10,7 @@ module.exports = function ClubManagerPlugin(pb){
 
   // Club manager dependencies
   var cmPlayer = require('player');
+	var cmMatchReport = require('match_report');
 
 	/* Plugin to manage sports club content */
 	function ClubManager(){}
@@ -21,8 +25,17 @@ module.exports = function ClubManagerPlugin(pb){
 	ClubManager.onInstall = function(cb) {
 		var cos = new pb.CustomObjectService();
 		
-		// Create player custom object.
- 		return cmPlayer.install(cos, util, cb);
+		// Match report depends on player type
+		async.series([
+			function(cb) {
+				// Create player custom object.
+				cmPlayer.install(cos, util, cb);
+			},
+			function(cb) {
+				// Create match report custom object
+				cmMatchReport.install(cos, util, cb);
+			}
+		], cb);
 		
 		// TODO Create team custom object. 
 		// TODO Create club custom object.
@@ -37,9 +50,16 @@ module.exports = function ClubManagerPlugin(pb){
 	 */
 	ClubManager.onUninstall = function(cb) {
 		pb.AdminNavigation.remove(TOP_MENU);
-
 		var cos = new pb.CustomObjectService();
-		return cmPlayer.uninstall(cos, util, cb);
+
+		async.parallel([
+			function(cb) {
+				cmPlayer.uninstall(cos, util, cb);
+			},
+			function(cb){
+				cmMatchReport.uninstall(cos, util, cb);
+			}
+		], cb);
 
    	// TODO Remove team custom object and clear db.
 		// TODO Remove club custom object and clear db.
