@@ -3,18 +3,36 @@
   <head>
     <script type="text/javascript" src="^angular_src^"></script>
     <script type="text/javascript" src="^angular_route_src^"></script>
-    <title>^site_name^</title>
+    <link rel="stylesheet" type="text/css" href="^bootstrap_css_src^" />
+    <title>^site_name^:^page_name^</title>
   </head>
   <body ng-app="pencilblueApp" ng-controller="PencilBlueController">
+    <div class="container">
     <div>
-      <table>
-        <tr ng-repeat="player in players">
-          <td>{{player.name}}</td>
-          <td>{{player.number}}</td>
-          <td>{{player.description}}</td>
-        </tr>
-      </table>
-      {{players}}
+      Header: todo
+    </div>
+    <div class="row">
+        <div id="player" class="col-md-8">
+          <div ng-show="selected" class="ng-hide panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">{{selected.name}} #{{selected.number}}</h3>
+            </div>
+            <div class="panel-body">
+              {{selected.description}}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <!-- list of players -->
+          <ul class="list-group">
+            <li class="list-group-item" ng-repeat="player in players">
+              <a href="#">{{player.name}} #{{player.number}}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      Selected: {{selected}}
+      All: {{players}}
     </div>
     ^angular^
   </body>

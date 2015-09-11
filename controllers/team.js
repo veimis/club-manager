@@ -32,7 +32,8 @@ module.exports = function(pb) {
       // Register angular controller
       var ok = self.ts.registerLocal('angular', function(flag, cb) {
         var objects = {
-          players: data
+          players: data,
+          selected: data[0]
         };
         var angularData = pb.ClientJs.getAngularController(objects, []);
         cb(null, angularData);
