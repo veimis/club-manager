@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="^bootstrap_css_src^" />
     <title>^site_name^:^page_name^</title>
   </head>
-  <body ng-app="pencilblueApp" ng-controller="PencilBlueController">
+  <body ng-app="club-managerApp" ng-controller="TeamController">
     <div class="container">
     <div>
       Header: todo
@@ -18,7 +18,8 @@
               <h3 class="panel-title">{{selected.name}} #{{selected.number}}</h3>
             </div>
             <div class="panel-body">
-              {{selected.description}}
+              <p>{{selected.description}}</p>
+              <img ng-src="{{selected.profilePicture.location}}" alt="profile image"/>
             </div>
           </div>
         </div>
@@ -26,14 +27,14 @@
           <!-- list of players -->
           <ul class="list-group">
             <li class="list-group-item" ng-repeat="player in players">
-              <a href="#">{{player.name}} #{{player.number}}</a>
+              <a href="" ng-click="showDetails(player._id)">{{player.name}} #{{player.number}}</a>
             </li>
           </ul>
         </div>
       </div>
-      Selected: {{selected}}
+      Selected: {{selected}}<br />
       All: {{players}}
     </div>
-    ^angular^
+    ^tmp_angular=team^
   </body>
 </html>

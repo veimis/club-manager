@@ -24,23 +24,18 @@ module.exports = function(pb) {
     var cos = new pb.CustomObjectService();
  
     // Query all players
-    cmPlayer.getPlayers(cos, util, function(err, data) {
+    cmPlayer.getAll(cos, util, function(err, data) {
       if(util.isError(err)) {
         throw err;
       }
 
-      // Register angular controller
-      var ok = self.ts.registerLocal('angular', function(flag, cb) {
-        var objects = {
-          players: data,
-          selected: data[0]
-        };
-        var angularData = pb.ClientJs.getAngularController(objects, []);
-        cb(null, angularData);
-      });
-			if(!ok) {
-				throw new Error('Failed to register angular controller');
-			}
+      // Register angular objects
+      var angularData = { 
+        players: data,
+        selected: data[0]
+      };
+      var angularObjects = pb.ClientJs.getAngularObjects(angularData);
+      self.ts.registerLocal('angular_objects', new pb.TemplateValue(angularObjects, false));
 			
       // Load team template
       self.ts.load('team', function(err, result) {

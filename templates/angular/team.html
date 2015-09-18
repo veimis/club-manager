@@ -1,0 +1,17 @@
+<script type="text/javascript">
+  angular.module('club-managerApp', ['ngRoute'])
+    .controller('TeamController', function($scope, $filter) {
+      ^angular_objects^
+
+      $scope.showDetails = function(playerId) {
+        $scope.selected  = $filter('filter')($scope.players, 
+          function(value, index, array) {
+            if(value._id === playerId) {
+              return true;
+            }
+            return false;
+          }, true)[0];
+      };
+    });
+</script>
+
