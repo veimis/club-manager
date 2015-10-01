@@ -22,9 +22,10 @@ module.exports = function(pb) {
   TeamController.prototype.render = function(cb) {
     var self = this;
     var cos = new pb.CustomObjectService();
+    var ms = new pb.MediaService();
  
     // Query all players
-    cmPlayer.getAll(cos, util, function(err, data) {
+    cmPlayer.getAll(cos, util, ms, function(err, data) {
       if(util.isError(err)) {
         throw err;
       }
