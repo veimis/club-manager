@@ -1,6 +1,6 @@
 <script type="text/javascript">
-  angular.module('club-managerApp', ['ngRoute'])
-    .controller('TeamController', function($scope, $filter) {
+  angular.module('club-managerApp', ['ngRoute', 'ngSanitize'])
+    .controller('TeamController', function($scope, $filter, $sce) {
       ^angular_objects^
 
       $scope.showDetails = function(playerId) {
@@ -10,7 +10,8 @@
               return true;
             }
             return false;
-          }, true)[0];
+          }, 
+        true)[0];
       };
     });
 </script>

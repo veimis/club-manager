@@ -1,40 +1,28 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <script type="text/javascript" src="^angular_src^"></script>
-    <script type="text/javascript" src="^angular_route_src^"></script>
-    <link rel="stylesheet" type="text/css" href="^bootstrap_css_src^" />
-    <title>^site_name^:^page_name^</title>
-  </head>
-  <body ng-app="club-managerApp" ng-controller="TeamController">
-    <div class="container">
-    <div>
-      Header: todo
-    </div>
+^tmp_header^
+  <div class="container" ng-controller="TeamController">
     <div class="row">
-        <div id="player" class="col-md-8">
-          <div ng-show="selected" class="ng-hide panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">{{selected.name}} #{{selected.number}}</h3>
-            </div>
-            <div class="panel-body">
-              <p>{{selected.description}}</p>
-              <img ng-src="{{selected.profilePicture}}" alt="profile image"/>
-            </div>
+      <div id="player" class="col-md-8">
+        <div ng-show="selected" class="ng-hide panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">{{selected.name}} #{{selected.number}}</h3>
+          </div>
+          <div class="panel-body">
+            <section ng-bind-html="selected.description"></section>
+            <img ng-src="{{selected.profilePicture}}" alt="profile image"/>
           </div>
         </div>
-        <div class="col-md-4">
-          <!-- list of players -->
-          <ul class="list-group">
-            <li class="list-group-item" ng-repeat="player in players">
-              <a href="" ng-click="showDetails(player._id)">{{player.name}} #{{player.number}}</a>
-            </li>
-          </ul>
-        </div>
       </div>
-      Selected: {{selected}}<br />
-      All: {{players}}
+      <div class="col-md-4">
+        <!-- list of players -->
+        <ul class="list-group">
+          <li class="list-group-item" ng-repeat="player in players">
+            <a href="" ng-click="showDetails(player._id)">{{player.name}} #{{player.number}}</a>
+          </li>
+        </ul>
+      </div>
     </div>
-    ^tmp_angular=team^
-  </body>
-</html>
+    Selected: {{selected}}<br />
+    All: {{players}}
+  </div>
+  ^tmp_angular=team^
+^tmp_footer^
