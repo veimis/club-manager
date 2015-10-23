@@ -1,12 +1,15 @@
 ^tmp_header^
 	<body ng-app="pencilblueApp" ng-controller="PencilBlueController">
 		<div class="container">
-			<table>
-				<tr ng-repeat="matchReport in matchReports">
-					<td>{{matchReport.name}}</td>
-				</tr>
-			</table>
-			{{matchReports}}
+      <div ng-repeat="matchReport in matchReports">
+        <h4>{{matchReport.name}}</h4>
+        <h6>{{matchReport.date | date:'EEEE yyyy-MM-dd'}}</h6>
+        <section ng-bind-html="matchReport.description"></section>
+        <section ng-repeat="player in matchReport.players">
+          <p>{{player.name}}</p>
+        </section>
+      </div>
+			MatchReports data: {{matchReports}}
 		</div>
 		^angular^
 	</body>

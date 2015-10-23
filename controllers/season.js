@@ -32,7 +32,7 @@ module.exports = function(pb) {
 				var objects = {
 					matchReports: data
 				};
-				var angularData = pb.ClientJs.getAngularController(objects, []);
+				var angularData = pb.ClientJs.getAngularController(objects, ['ngSanitize']);
 				cb(null, angularData);
 			});
 			if(!ok) {
