@@ -1,5 +1,4 @@
-^tmp_header^
-<body ng-app="club-managerApp">
+^tmp_head^
   <div class="container" ng-controller="TeamController">
     <div class="row">
       <div id="player" class="col-md-8">
@@ -17,7 +16,7 @@
         <!-- list of players -->
         <ul class="list-group">
           <li class="list-group-item" ng-repeat="player in players">
-            <a href="" ng-click="showDetails(player._id)">{{player.name}} #{{player.number}}</a>
+            <a href="" ng-click="showDetails(player)">{{player.name}} #{{player.number}}</a>
           </li>
         </ul>
       </div>
@@ -25,5 +24,6 @@
     Selected: {{selected}}<br />
     All: {{players}}
   </div>
+  ^angular^
   ^tmp_angular=team^
 ^tmp_footer^

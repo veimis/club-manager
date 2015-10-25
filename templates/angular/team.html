@@ -1,17 +1,11 @@
 <script type="text/javascript">
-  angular.module('club-managerApp', ['ngRoute', 'ngSanitize'])
-    .controller('TeamController', function($scope, $filter, $sce) {
+  angular.module('pencilblueApp')
+    .controller('TeamController', function($scope, $sce) {
       ^angular_objects^
 
-      $scope.showDetails = function(playerId) {
-        $scope.selected  = $filter('filter')($scope.players, 
-          function(value, index, array) {
-            if(value._id === playerId) {
-              return true;
-            }
-            return false;
-          }, 
-        true)[0];
+      // Update the selected player.
+      $scope.showDetails = function(player) {
+        $scope.selected  = player
       };
     });
 </script>

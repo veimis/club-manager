@@ -24,28 +24,38 @@ module.exports = function(pb) {
     var cos = new pb.CustomObjectService();
     var ms = new pb.MediaService();
  
-    // Query all players
-    cmPlayer.getAll(cos, util, ms, function(err, data) {
-      if(util.isError(err)) {
-        throw err;
-      }
-
-      // Register angular objects
-      var angularData = { 
-        players: data,
-        selected: data[0]
-      };
-      var angularObjects = pb.ClientJs.getAngularObjects(angularData);
-      self.ts.registerLocal('angular_objects', new pb.TemplateValue(angularObjects, false));
-			
-      // Load team template
-      self.ts.load('team', function(err, result) {
+    self.getNavigation(function(themeSettings, navigation, accountButtons) {
+      self.ts.registerLocal('navigation', new pb.TemplateValue(navigation, false));
+      self.ts.registerLocal('account_buttons', new pb.TemplateValue(accountButtons, false));
+      // Query all players
+      cmPlayer.getAll(cos, util, ms, function(err, data) {
         if(util.isError(err)) {
           throw err;
         }
-	    	cb({content: result});
-	  	});
-    }); 
+
+        // Register angular objects for team controller
+        var angularData = { 
+          players: data,
+          selected: data[0]
+        };
+        var angularObjects = pb.ClientJs.getAngularObjects(angularData);
+        self.ts.registerLocal('angular_objects', new pb.TemplateValue(angularObjects, false));
+        
+        // Register angular controller for pencilblue navigation
+        var ok = self.ts.registerLocal('angular', function(flag, cb) {
+          var angularData = pb.ClientJs.getAngularController({}, ['ngSanitize']);
+          cb(null, angularData);
+        });        
+        
+        // Load team template
+        self.ts.load('team', function(err, result) {
+          if(util.isError(err)) {
+            throw err;
+          }
+          cb({content: result});
+        });
+      }); 
+    });
   };
   
   // Register routes
@@ -62,6 +72,25 @@ module.exports = function(pb) {
     cb(null, routes);
   };
  
+  // Get navigation
+  // Copy from pencilblue/controllers/index.js
+  TeamController.prototype.getNavigation = function(cb) {
+      var options = {
+          currUrl: this.req.url,
+          session: this.session,
+          ls: this.ls,
+          activeTheme: this.activeTheme
+      };
+      
+      var menuService = new pb.TopMenuService();
+      menuService.getNavItems(options, function(err, navItems) {
+          if (util.isError(err)) {
+              pb.log.error('Index: %s', err.stack);
+          }
+          cb(navItems.themeSettings, navItems.navigation, navItems.accountButtons);
+      });
+  };
+
   return TeamController;
 };
 
