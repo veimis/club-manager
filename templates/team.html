@@ -1,26 +1,27 @@
 ^tmp_head^
   <div class="container" ng-controller="TeamController">
     <div class="row">
-      <div id="player" class="col-md-8">
+      <div class="col-md-8">
         <div ng-show="selected" class="ng-hide panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title">{{selected.name}} #{{selected.number}}</h3>
           </div>
           <div class="panel-body">
             <section ng-bind-html="selected.description"></section>
-            <img ng-src="{{selected.profilePicture}}" alt="profile image"/>
+            <img ng-src="{{selected.profilePicture.location}}" alt="profile image"/>
           </div>
         </div>
       </div>
       <div class="col-md-4">
         <!-- list of players -->
-        <ul class="list-group">
-          <li class="list-group-item" ng-repeat="player in players">
-            <a href="" ng-click="showDetails(player)">{{player.name}} #{{player.number}}</a>
-          </li>
-        </ul>
+        <div class="list-group" ng-repeat="team in teams">
+          <a class="list-group-item active" >{{team.name}}</a>
+          <a class="list-group-item" href="" ng-repeat="player in team.players" ng-click="showDetails(player)">{{player.name}} #{{player.number}}</a>
+        </div>
       </div>
     </div>
+    Selected: {{selected}}
+    Teams: {{teams}}
   </div>
   ^angular^
   ^tmp_angular=team^

@@ -2,7 +2,7 @@
 		<div class="container">
       <div class="panel panel-primary" ng-repeat="matchReport in matchReports">
         <div class="panel-heading">
-          <h4 class="panel-title">{{matchReport.name}}</h4>
+          <h4 class="panel-title">{{matchReport.season.name}}: {{matchReport.name}}</h4>
         </div>
         <div class="panel-body">
           <h6>{{matchReport.date | date:'EEEE yyyy-MM-dd'}}</h6>

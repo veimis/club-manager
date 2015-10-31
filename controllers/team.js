@@ -1,7 +1,7 @@
 // Controller module for a team page showing the players of the club
 
 // Dependencies
-var cmPlayer = require('player');
+var cmTeam = require('team');
 
 module.exports = function(pb) {
   // Pencilblue dependencies
@@ -27,16 +27,16 @@ module.exports = function(pb) {
     self.getNavigation(function(themeSettings, navigation, accountButtons) {
       self.ts.registerLocal('navigation', new pb.TemplateValue(navigation, false));
       self.ts.registerLocal('account_buttons', new pb.TemplateValue(accountButtons, false));
-      // Query all players
-      cmPlayer.getAll(cos, util, ms, function(err, data) {
+      // Query all teams
+      cmTeam.getAll(cos, util, ms, function(err, data) {
         if(util.isError(err)) {
           throw err;
         }
 
         // Register angular objects for team controller
         var angularData = { 
-          players: data,
-          selected: data[0]
+          teams: data,
+          selected: data[0].players[0]
         };
         var angularObjects = pb.ClientJs.getAngularObjects(angularData);
         self.ts.registerLocal('angular_objects', new pb.TemplateValue(angularObjects, false));
