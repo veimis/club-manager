@@ -12,20 +12,17 @@
               <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Description</th>
               </tr>
             </thead>
             <tbody>
             <tr ng-repeat="player in matchReport.players">
               <th>{{player.number}}</th>
               <th>{{player.name}}</th>
-              <th ng-bind-html="player.description"></th>
             </tr>
             <tbody>
           </table>
         </div>
       </div>
-			MatchReports data: {{matchReports}}
 		</div>
 		^angular^
 ^tmp_footer^

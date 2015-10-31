@@ -9,7 +9,9 @@ module.exports = function ClubManagerPlugin(pb){
 	var util = pb.util;
 
   // Club manager dependencies
+  var cmTeam = require('team');
   var cmPlayer = require('player');
+  var cmSeason = require('season');
 	var cmMatchReport = require('match_report');
 
 	/* Plugin to manage sports club content */
@@ -31,14 +33,19 @@ module.exports = function ClubManagerPlugin(pb){
 				// Create player custom object.
 				cmPlayer.install(cos, util, cb);
 			},
+      function(cb) {
+        // Create team custom object
+        cmTeam.install(cos, util, cb);
+      },
+      function(cb) {
+        // Create season custom object
+        cmSeason.install(cos, util, cb);
+      },
 			function(cb) {
 				// Create match report custom object
 				cmMatchReport.install(cos, util, cb);
 			}
 		], cb);
-		
-		// TODO Create team custom object. 
-		// TODO Create club custom object.
 	};
 
 	/* Called when the application is unsinstalling this plugin.
@@ -53,16 +60,19 @@ module.exports = function ClubManagerPlugin(pb){
 		var cos = new pb.CustomObjectService();
 
 		async.parallel([
-			function(cb) {
-				cmPlayer.uninstall(cos, util, cb);
-			},
-			function(cb){
+      function(cb){
 				cmMatchReport.uninstall(cos, util, cb);
+			},
+      function(cb) {
+        cmSeason.uninstall(cos, util, cb);
+      },
+      function(cb) {
+				cmTeam.uninstall(cos, util, cb);
+			},
+      function(cb) {
+				cmPlayer.uninstall(cos, util, cb);
 			}
-		], cb);
-
-   	// TODO Remove team custom object and clear db.
-		// TODO Remove club custom object and clear db.
+    ], cb);
 	};
 
 	/* 
