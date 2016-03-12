@@ -1,9 +1,9 @@
-	{
-		"uid": "club-manager",
-		"name": "Sports club manager.",
-		"description": "Create and manage teams in a club. To display the team page create a link to /club-manager/team",
+{
+	"uid": "club-manager",
+	"name": "Sports club manager.",
+	"description": "Create and manage teams in a club. To display the team page create a link to /club-manager/team",
 	"version": "0.0.1",
-	"pb_version": "0.4.x",
+	"pb_version": "0.5.x",
 	"icon": "/imgs/sample.ico",
 	"author": {
 		"name": "Ilkka Veima",
@@ -30,7 +30,7 @@
 		"content_templates": [
 			{
 				"file": "index",
-				"name": "custom_content_template"
+				"name": "Shown in the plugin page. Shoudl be used to give information on the themeing?"
 			}
 		]
 	}

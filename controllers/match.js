@@ -1,4 +1,4 @@
-// Controller module for the match report
+// Controller module for the match 
 
 module.exports = function(pb) {
   // Pencilblue dependencies
@@ -6,16 +6,16 @@ module.exports = function(pb) {
   var BaseController = pb.BaseController;
   
   // Create the controller
-  function MatchReportController(){};
+  function MatchController(){};
   
   // Inherits from base controller: accessors for template service, 
   // localization service, request and response handlers.
-  util.inherits(MatchReportController, BaseController);
+  util.inherits(MatchController, BaseController);
  
   // Subnavigation key
-  var SUB_NAV_KEY = 'match_report_index';
+  var SUB_NAV_KEY = 'match_index';
   
-  MatchReportController.prototype.render = function(cb) {
+  MatchController.prototype.render = function(cb) {
     var self = this;
  
     // Register angular controller 
@@ -37,7 +37,7 @@ module.exports = function(pb) {
    
   };
 
-  MatchReportController.getRoutes = function(cb) {
+  MatchController.getRoutes = function(cb) {
     var routes = [
       {
         method: 'get',
@@ -51,7 +51,7 @@ module.exports = function(pb) {
     cb(null, routes);
   };
 
-  MatchReportController.prototype.getTabs = function() {
+  MatchController.prototype.getTabs = function() {
     return [
       {
         active: 'active',
@@ -62,7 +62,7 @@ module.exports = function(pb) {
     ];
   };
 
-  MatchReportController.getSubNavItems = function(key, ls, data) {
+  MatchController.getSubNavItems = function(key, ls, data) {
     return [
       {
         name: 'match_report',
@@ -73,8 +73,8 @@ module.exports = function(pb) {
     ];
   };
 
-  // Register match report subnavigation
-  pb.AdminSubnavService.registerFor(SUB_NAV_KEY, MatchReportController.getSubNavItems);
+  // Register match subnavigation
+  pb.AdminSubnavService.registerFor(SUB_NAV_KEY, MatchController.getSubNavItems);
  
-  return MatchReportController;
+  return MatchController;
 };

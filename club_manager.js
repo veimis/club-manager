@@ -9,10 +9,11 @@ module.exports = function ClubManagerPlugin(pb){
 	var util = pb.util;
 
   // Club manager dependencies
-  var cmTeam = require('team');
-  var cmPlayer = require('player');
-  var cmSeason = require('season');
-	var cmMatchReport = require('match_report');
+  var cmTeam = require('./lib/team.js');
+  var cmPlayer = require('./lib/player.js');
+  var cmSeason = require('./lib/season.js');
+	var cmMatch = require('./lib/match.js');
+  var cmMatchStatistics = require('./lib/match_statistics.js');
 
 	/* Plugin to manage sports club content */
 	function ClubManager(){}
@@ -27,7 +28,8 @@ module.exports = function ClubManagerPlugin(pb){
 	ClubManager.onInstall = function(cb) {
 		var cos = new pb.CustomObjectService();
 		
-		// Match report depends on player type
+    // The order of adding custom type is important as they
+    // have dependencies to each other.
 		async.series([
 			function(cb) {
 				// Create player custom object.
@@ -42,9 +44,13 @@ module.exports = function ClubManagerPlugin(pb){
         cmSeason.install(cos, util, cb);
       },
 			function(cb) {
-				// Create match report custom object
-				cmMatchReport.install(cos, util, cb);
-			}
+				// Create match custom object
+				cmMatch.install(cos, util, cb);
+			},
+      function(cb) {
+        // Create match statistics custom object
+        cmMatchStatistics.install(cos, util, cb);
+      }
 		], cb);
 	};
 
@@ -59,9 +65,13 @@ module.exports = function ClubManagerPlugin(pb){
 		pb.AdminNavigation.remove(TOP_MENU);
 		var cos = new pb.CustomObjectService();
 
-		async.parallel([
+    // The order may have importance, because of the dependencies
+		async.series([
+      function(cb) {
+        cmMatchStatistics.uninstall(cos, util, cb);
+      },
       function(cb){
-				cmMatchReport.uninstall(cos, util, cb);
+				cmMatch.uninstall(cos, util, cb);
 			},
       function(cb) {
         cmSeason.uninstall(cos, util, cb);

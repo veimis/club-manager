@@ -1,7 +1,7 @@
 // Controller module for a season showing the match reports of the season
 
 // Dependencies
-var cmMatchReport = require('match_report');
+var cmMatchReport = require('../lib/match.js');
 
 module.exports = function(pb) {
 	// Pencilblue dependencies
