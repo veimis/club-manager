@@ -2,12 +2,26 @@
 		<div class="container" ng-controller="MatchController">
       <div class="panel panel-primary">
         <div class="panel-heading">
-          <h3 class="panel-title">{{match.title}}</h3>
+          <h3 class="panel-title">{{season.name}}: {{match.title}}</h3>
         </div>
         <div class="panel-body">
           <h6> {{match.date | date:'EEEE yyyy-MM-dd'}}</h6>
-          <p>{{match.description}}</p>
-        </div>
+          <section ng-bind-html="match.description"></section>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="player in players">
+              <th>{{player.number}}</th>
+              <th>{{player.name}}</th>
+            </tr>
+            <tbody>
+          </table>
+</div>
       </div>
 		</div>
 		^angular^

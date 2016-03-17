@@ -1,7 +1,8 @@
 // Controller module for the match 
 
 // Dependencies
-var cmUtils = require('./../lib/club_manager_utils.js');
+var cmUtils = require('../lib/club_manager_utils.js');
+var cmMatch = require('../lib/match.js');
 
 module.exports = function(pb) {
   // Pencilblue dependencies
@@ -46,10 +47,13 @@ module.exports = function(pb) {
     var self = this;
     var cos = new pb.CustomObjectService();
     
-    cos.loadById(self.pathVars.id, function(err, match) {
+    // Query data
+    cmMatch.loadByName(self.query.name, cos, util, function(err, data) {
       // Register angular objects for match controller
       var angularData = {
-        match: match
+        match: data.match,
+        season: data.season,
+        players: data.players
       };
       var angularObjects = pb.ClientJs.getAngularObjects(angularData);
       self.ts.registerLocal('angular_objects', new pb.TemplateValue(angularObjects, false));
@@ -77,7 +81,7 @@ module.exports = function(pb) {
       },
       {
         method: 'get',
-        path: '/club-manager/match/:id',
+        path: '/club-manager/match/',
         auth_required: false,
         content_type: 'text/html',
         handler: 'renderMatch'
