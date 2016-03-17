@@ -1,7 +1,7 @@
 // Controller module for a season showing the match reports of the season
 
 // Dependencies
-var cmMatchReport = require('../lib/match.js');
+var cmMatch = require('../lib/match.js');
 
 module.exports = function(pb) {
 	// Pencilblue dependencies
@@ -26,7 +26,7 @@ module.exports = function(pb) {
       self.ts.registerLocal('navigation', new pb.TemplateValue(navigation, false));
       self.ts.registerLocal('account_buttons', new pb.TemplateValue(accountButtons, false));
       // Query all match reports
-      cmMatchReport.getAll(cos, util, function(err, data) {
+      cmMatch.getAll(cos, util, function(err, data) {
         if(util.isError(err)) {
           throw err;
         }
@@ -34,7 +34,7 @@ module.exports = function(pb) {
         // Register angular controller
         var ok = self.ts.registerLocal('angular', function(flag, cb) {
           var objects = {
-            matchReports: data
+            matches: data
           };
           var angularData = pb.ClientJs.getAngularController(objects, ['ngSanitize']);
           cb(null, angularData);
