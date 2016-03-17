@@ -6,14 +6,13 @@ var cmTeam = require('../lib/team.js');
 module.exports = function(pb) {
   // Pencilblue dependencies
   var util = pb.util;
-  var BaseController = pb.BaseController;
   
   // Create the controller
   function TeamController(){};
   
   // Inherits from base controller: accessors for template service, 
   // localization service, request and response handlers.
-  util.inherits(TeamController, BaseController);
+  util.inherits(TeamController, pb.BaseController);
 
   // Render team template
   // Render is executed within a domain context and errors thrown 
@@ -27,6 +26,7 @@ module.exports = function(pb) {
     self.getNavigation(function(themeSettings, navigation, accountButtons) {
       self.ts.registerLocal('navigation', new pb.TemplateValue(navigation, false));
       self.ts.registerLocal('account_buttons', new pb.TemplateValue(accountButtons, false));
+      
       // Query all teams
       cmTeam.getAll(cos, util, ms, function(err, data) {
         if(util.isError(err)) {
