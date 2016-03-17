@@ -1,12 +1,14 @@
 ^tmp_head^
 		<div class="container">
-      <div class="panel panel-primary" ng-repeat="matchReport in matchReports">
+      <div class="panel panel-primary" ng-repeat="match in matches">
         <div class="panel-heading">
-          <h4 class="panel-title">{{matchReport.season.name}}: {{matchReport.name}}</h4>
+          <h4 class="panel-title"><a ng-href="/club-manager/match/?name={{match.name}}">
+            {{match.season.name}}: {{match.title}}
+          </a></h4>
         </div>
         <div class="panel-body">
-          <h6>{{matchReport.date | date:'EEEE yyyy-MM-dd'}}</h6>
-          <section ng-bind-html="matchReport.description"></section>
+          <h6>{{match.date | date:'EEEE yyyy-MM-dd'}}</h6>
+          <section ng-bind-html="match.description"></section>
           <table class="table">
             <thead>
               <tr>
@@ -15,7 +17,7 @@
               </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="player in matchReport.players">
+            <tr ng-repeat="player in match.players">
               <th>{{player.number}}</th>
               <th>{{player.name}}</th>
             </tr>
