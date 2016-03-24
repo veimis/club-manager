@@ -39,21 +39,21 @@ module.exports = function(pb) {
 
     if(self.query.name) {
       cmSeason.loadByName(self.query.name, cos, util, function(err, season) {
-        console.log(season);
         cmMatch.loadBySeason(season._id, cos, util, function(err, matches) {
-          // TODO not getting matches yet, season query works
-          console.log(matches);
+          renderSeason(self, matches, util, cmUtils, cb);
         });
       });
     }
-
-    cmMatch.getAll(cos, util, function(err, matches) {
-      if(util.isError(err)) {
-        throw err;
-      }
-    
-      renderSeason(self, matches, util, cmUtils, cb);
-	  });
+    else
+    {
+      cmMatch.getAll(cos, util, function(err, matches) {
+        if(util.isError(err)) {
+          throw err;
+        }
+      
+        renderSeason(self, matches, util, cmUtils, cb);
+      });
+    }
 	};
 
   // Render given matches using the season template.
