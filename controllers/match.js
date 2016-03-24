@@ -51,15 +51,13 @@ module.exports = function(pb) {
     cmMatch.loadByName(self.query.name, cos, util, function(err, data) {
       // Register angular objects for match controller
       var angularData = {
-        match: data.match,
-        season: data.season,
-        players: data.players
+        match: data[0],
       };
       var angularObjects = pb.ClientJs.getAngularObjects(angularData);
       self.ts.registerLocal('angular_objects', new pb.TemplateValue(angularObjects, false));
 
       cmUtils.defaultTemplateValues(pb, self, function(err) {
-        self.ts.load('match', function(err, result) {
+        self.ts.load('matchStandAlone', function(err, result) {
           if(util.isError(err)) {
             throw err;
           }

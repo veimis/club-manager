@@ -1,29 +1,7 @@
 ^tmp_head^
 		<div class="container">
-      <div class="panel panel-primary" ng-repeat="match in matches">
-        <div class="panel-heading">
-          <h4 class="panel-title"><a ng-href="/club-manager/match/?name={{match.name}}">
-            {{match.season.name}}: {{match.title}}
-          </a></h4>
-        </div>
-        <div class="panel-body">
-          <h6>{{match.date | date:'EEEE yyyy-MM-dd'}}</h6>
-          <section ng-bind-html="match.description"></section>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-              </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="player in match.players">
-              <th>{{player.number}}</th>
-              <th>{{player.name}}</th>
-            </tr>
-            <tbody>
-          </table>
-        </div>
+      <div ng-repeat="match in matches">
+        ^tmp_match^
       </div>
 		</div>
 		^angular^
