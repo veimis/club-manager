@@ -3,6 +3,7 @@
 // Dependencies
 var cmUtils = require('../lib/club_manager_utils.js');
 var cmMatch = require('../lib/match.js');
+var cmMatchStats = require('../lib/match_statistics.js');
 
 module.exports = function(pb) {
   // Pencilblue dependencies
@@ -49,22 +50,25 @@ module.exports = function(pb) {
     
     // Query data
     cmMatch.loadByName(self.query.name, cos, util, function(err, data) {
-      // Register angular objects for match controller
-      var angularData = {
-        match: data[0],
-      };
-      var angularObjects = pb.ClientJs.getAngularObjects(angularData);
-      self.ts.registerLocal('angular_objects', new pb.TemplateValue(angularObjects, false));
+	  cmMatchStats.loadByMatch(data[0]._id, cos, util, function(err, stats) {
+		// Register angular objects for match controller
+		var angularData = {
+		  match: data[0],
+		  stats: stats
+		};
+		var angularObjects = pb.ClientJs.getAngularObjects(angularData);
+		self.ts.registerLocal('angular_objects', new pb.TemplateValue(angularObjects, false));
 
-      cmUtils.defaultTemplateValues(pb, self, function(err) {
-        self.ts.load('matchStandAlone', function(err, result) {
-          if(util.isError(err)) {
-            throw err;
-          }
+		cmUtils.defaultTemplateValues(pb, self, function(err) {
+		  self.ts.load('matchStandAlone', function(err, result) {
+			if(util.isError(err)) {
+			  throw err;
+			}
 
-          cb({content: result});
-        });
-      });
+			cb({content: result});
+		  });
+		});
+	  });
     });
   };
 

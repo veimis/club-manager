@@ -22,5 +22,20 @@
       </tr>
       <tbody>
     </table>
+	<table class="table">
+      <thead>
+		<tr>
+		  <th>Event</th>
+		  <th>Time</th>
+		</tr>
+	  </thead>
+	  <tbody>
+	    <tr ng-repeat="stat in stats">
+		  <th>{{stat.name}}</th>
+		  <th>{{stat.time}}</th>
+		</tr>
+	  </tbody>
+	</table>
   </div>
 </div>
+{{stats}}
