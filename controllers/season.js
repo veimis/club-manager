@@ -4,6 +4,7 @@
 var cmSeason = require('../lib/season.js');
 var cmMatch = require('../lib/match.js');
 var cmUtils = require('../lib/club_manager_utils.js');
+var async = require('async');
 
 module.exports = function(pb) {
 	// Pencilblue dependencies
@@ -38,11 +39,16 @@ module.exports = function(pb) {
 		var cos = new pb.CustomObjectService();
 
     if(self.query.name) {
-      cmSeason.loadByName(self.query.name, cos, util, function(err, season) {
-        cmMatch.loadBySeason(season._id, cos, util, function(err, matches) {
-          renderSeason(self, matches, util, cmUtils, cb);
-        });
-      });
+	  async.waterfall([
+	    function(cb) {
+          cmSeason.loadByName(self.query.name, cos, util, cb);
+		},
+		function(season, cb) {
+		  cmMatch.loadBySeason(season._id, cos, util, cb);
+		}
+	  ], function(err, matches) {
+	    renderSeason(self, matches, util, cmUtils, cb);
+	  });
     }
     else
     {
