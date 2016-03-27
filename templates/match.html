@@ -1,38 +1,23 @@
 <div class="panel panel-primary">
   <div class="panel-heading">
     <h3 class="panel-title">
-      <a ng-href="/club-manager/season/?name={{match.season.name}}">{{match.season.name}}</a>
+      <a ng-href="/club-manager/season/?name={{match.season.name}}">
+		{{match.season.name}}
+	  </a>
       : <a ng-href="/club-manager/match/?name={{match.title}}">{{match.title}}</a>
     </h3>
   </div>
   <div class="panel-body">
     <h6> {{match.date | date:'EEEE yyyy-MM-dd'}}</h6>
     <section ng-bind-html="match.description"></section>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Name</th>
-        </tr>
-      </thead>
-      <tbody>
-      <tr ng-repeat="player in match.players">
-        <th>{{player.number}}</th>
-        <th>{{player.name}}</th>
-      </tr>
-      <tbody>
-    </table>
-	<table class="table">
-      <thead>
-		<tr>
-		  <th>Event</th>
-		  <th>Time</th>
-		</tr>
-	  </thead>
+<table class="table">
 	  <tbody>
-	    <tr ng-repeat="stat in stats">
-		  <th>{{stat.name}}</th>
+	    <tr ng-repeat="stat in match.stats">
 		  <th>{{stat.time}}</th>
+		  <th>#{{stat.player.number}} <a ng-href="/club-manager/player/?name={{stat.player.name}}">
+			  {{stat.player.name}}
+		  </a></th>
+		  <th>{{stat.name}}</th>
 		</tr>
 	  </tbody>
 	</table>

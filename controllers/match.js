@@ -54,8 +54,9 @@ module.exports = function(pb) {
 		// Register angular objects for match controller
 		var angularData = {
 		  match: data[0],
-		  stats: stats
 		};
+		angularData.match.stats = stats;
+
 		var angularObjects = pb.ClientJs.getAngularObjects(angularData);
 		self.ts.registerLocal('angular_objects', new pb.TemplateValue(angularObjects, false));
 
