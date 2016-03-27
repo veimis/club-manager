@@ -4,6 +4,7 @@
 var cmSeason = require('../lib/season.js');
 var cmMatch = require('../lib/match.js');
 var cmUtils = require('../lib/club_manager_utils.js');
+var cmMatchStats = require('../lib/match_statistics.js');
 var async = require('async');
 
 module.exports = function(pb) {
@@ -45,6 +46,9 @@ module.exports = function(pb) {
 		},
 		function(season, cb) {
 		  cmMatch.loadBySeason(season._id, cos, util, cb);
+		},
+		function(matches, cb) {
+		  getStats(self, matches, cos, util, cb);
 		}
 	  ], function(err, matches) {
 	    renderSeason(self, matches, util, cmUtils, cb);
@@ -56,11 +60,29 @@ module.exports = function(pb) {
         if(util.isError(err)) {
           throw err;
         }
-      
-        renderSeason(self, matches, util, cmUtils, cb);
+		getStats(self, matches, cos, util, function(err, matches) {
+		  renderSeason(self, matches, util, cmUtils, cb);
+		});
       });
     }
 	};
+
+  // Get match stats for given matches.
+  // controller: This controller
+  // matches: Collection of match objects
+  // util: pencilblue utilities
+  // cmUtils: Club manager utilities
+  // cb = callback(err, data)
+  function getStats(controller, matches, cos, util, cb) {
+    async.each(matches, function(match, eachCb) {
+      cmMatchStats.loadByMatch(match._id, cos, util, function(err, stats) {
+        match.stats = stats;
+		eachCb();
+	  });
+	}, function(err) {
+      cb(err, matches);
+	});
+  }
 
   // Render given matches using the season template.
   // controller:  This controller, not sure how the scope works here.
