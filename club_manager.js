@@ -49,7 +49,7 @@ module.exports = function ClubManagerPlugin(pb){
 			},
       function(cb) {
         // Create match statistics custom object
-        cmMatchStatistics.install(cos, util, cb);
+        cmMatchStatistics.install(new pb.DAO(), util, cb);
       }
 		], cb);
 	};
