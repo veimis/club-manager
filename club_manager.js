@@ -105,24 +105,6 @@ module.exports = function ClubManagerPlugin(pb){
       access: pb.SecurityService.ACCESS_EDITOR,
     }); 
 
-    // Add management to navigation
-    pb.AdminNavigation.addChild(TOP_MENU, {
-      id: 'club-manager-management',
-      title: 'Management',
-      icon: 'cogs',
-      href: '/club-manager/admin',
-      access: pb.SecurityService.ACCESS_EDITOR
-    });
-
-    // Add match reports to navigation
-    pb.AdminNavigation.addChild(TOP_MENU, {
-      id: 'club-manager-match-report',
-      title: 'Match reports',
-      icon: 'file-o',
-      href: '/club-manager/admin/match-report',
-      access: pb.SecurityService.ACCESS_EDITOR     
-    }); 
-        
     cb(null, true);
 	};
 
