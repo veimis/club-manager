@@ -48,7 +48,7 @@ module.exports = function(pb) {
 		  cmMatch.loadBySeason(season._id, cos, util, cb);
 		},
 		function(matches, cb) {
-		  getStats(self, matches, cos, util, cb);
+		  getStats(self, matches, new pb.DAO(), util, cb);
 		}
 	  ], function(err, matches) {
 	    renderSeason(self, matches, util, cmUtils, cb);
@@ -60,7 +60,7 @@ module.exports = function(pb) {
         if(util.isError(err)) {
           throw err;
         }
-		getStats(self, matches, cos, util, function(err, matches) {
+		getStats(self, matches, new pb.DAO(), util, function(err, matches) {
 		  renderSeason(self, matches, util, cmUtils, cb);
 		});
       });
@@ -70,14 +70,15 @@ module.exports = function(pb) {
   // Get match stats for given matches.
   // controller: This controller
   // matches: Collection of match objects
+  // dao: pencilblue data access object
   // util: pencilblue utilities
   // cmUtils: Club manager utilities
   // cb = callback(err, data)
-  function getStats(controller, matches, cos, util, cb) {
+  function getStats(controller, matches, dao, util, cb) {
     async.each(matches, function(match, eachCb) {
-      cmMatchStats.loadByMatch(match._id, cos, util, function(err, stats) {
+      cmMatchStats.loadByMatch(match._id, dao, util, function(err, stats) {
         match.stats = stats;
-		eachCb();
+        eachCb();
 	  });
 	}, function(err) {
       cb(err, matches);

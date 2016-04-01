@@ -50,7 +50,7 @@ module.exports = function(pb) {
     
     // Query data
     cmMatch.loadByName(self.query.name, cos, util, function(err, data) {
-	  cmMatchStats.loadByMatch(data[0]._id, cos, util, function(err, stats) {
+	  cmMatchStats.loadByMatch(data[0]._id, new pb.DAO(), util, function(err, stats) {
 		// Register angular objects for match controller
 		var angularData = {
 		  match: data[0],
