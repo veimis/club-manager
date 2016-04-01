@@ -71,6 +71,11 @@ module.exports = function(pb) {
         href: '#seasons',
         icon: 'trophy',
         title: 'Seasons'
+      },
+      {
+        href: '#matches',
+        icon: 'futbol-o',
+        title: 'Matches'
       }
     ];
   };

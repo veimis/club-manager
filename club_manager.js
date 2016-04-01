@@ -100,7 +100,7 @@ module.exports = function ClubManagerPlugin(pb){
     pb.AdminNavigation.add({
       id: TOP_MENU,
       title: 'Club manager',
-      icon: 'cog',
+      icon: 'futbol-o',
       href: '/club-manager/admin',
       access: pb.SecurityService.ACCESS_EDITOR,
     }); 
