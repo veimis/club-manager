@@ -1,5 +1,9 @@
 // Controller module for the club manager settings
 
+// Dependencies
+var async = require('async');
+var clubAdmin = require('../lib/club_manager_admin.js');
+
 module.exports = function(pb) {
   // Pencilblue dependencies
   var util = pb.util;
@@ -21,21 +25,33 @@ module.exports = function(pb) {
   // cb = callback(result)
   AdminController.prototype.render = function(cb) {
     var self = this;
-    
-    // Register angular controller 
-    self.ts.registerLocal('angular', function(flag, cb) {
-      var objects = {
-        navigation: pb.AdminNavigation.get(self.session, ['dashboard'], self.localizationService), 
-        pills: pb.AdminSubnavService.get(SUB_NAV_KEY, self.ls),
-        access: self.session.authentication.admin_level,
-        tabs: self.getTabs()
-      };
-      var angularData = pb.ClientJs.getAngularController(objects, []);
-      cb(null, angularData);
-    }); 
-      
-    self.ts.load('/admin/admin', function(err, result) {
-      cb({content: result});
+
+    // Get admin view data
+    async.waterfall([
+      function(cb) {
+        clubAdmin.getAdminData(function(err, adminData) {
+          cb(err, adminData);
+        });
+      },
+      function(adminData, cb) {
+        // Register angular controller 
+        self.ts.registerLocal('angular', function(flag, cb) {
+          var objects = {
+            navigation: pb.AdminNavigation.get(self.session, ['dashboard'], self.localizationService), 
+            pills: pb.AdminSubnavService.get(SUB_NAV_KEY, self.ls),
+            access: self.session.authentication.admin_level,
+            tabs: self.getTabs(),
+            clubManager: adminData
+          };
+          var angularData = pb.ClientJs.getAngularController(objects, []);
+          cb(null, angularData);
+        }); 
+        cb(null);
+      }],
+    function(err, result) {
+      self.ts.load('/admin/admin', function(err, result) {
+        cb({content: result});
+      });
     });
   };
   
