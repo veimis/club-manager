@@ -13,6 +13,9 @@ module.exports = function PB(config) {
       registerFor: function(){}
     };
 
+    // Fake custom object service
+    pb.CustomObjectService = function(){};
+
     return pb;
 }
 

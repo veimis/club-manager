@@ -7,6 +7,7 @@ var clubAdmin = require('../lib/club_manager_admin.js');
 module.exports = function(pb) {
   // Pencilblue dependencies
   var util = pb.util;
+  var cos = new pb.CustomObjectService();
   var BaseController = pb.BaseController;
   
   // Create the controller
@@ -29,11 +30,15 @@ module.exports = function(pb) {
     // Get admin view data
     async.waterfall([
       function(cb) {
-        clubAdmin.getAdminData(function(err, adminData) {
+        clubAdmin.getAdminData(cos, util, new pb.DAO(), function(err, adminData) {
           cb(err, adminData);
         });
       },
       function(adminData, cb) {
+        // Register angular objects for the controller
+        var angularObjects = pb.ClientJs.getAngularObjects(adminData);
+        self.ts.registerLocal('angular_objects', new pb.TemplateValue(angularObjects, false));
+
         // Register angular controller 
         self.ts.registerLocal('angular', function(flag, cb) {
           var objects = {
@@ -48,7 +53,7 @@ module.exports = function(pb) {
         }); 
         cb(null);
       }],
-    function(err, result) {
+    function(err, waterfallResult) {
       self.ts.load('/admin/admin', function(err, result) {
         cb({content: result});
       });
@@ -73,7 +78,6 @@ module.exports = function(pb) {
   AdminController.prototype.getTabs = function() {
     return [
       {
-        active: 'active',
         href: '#teams',
         icon: 'users',
         title: 'Teams'
@@ -89,6 +93,7 @@ module.exports = function(pb) {
         title: 'Seasons'
       },
       {
+        active: 'active',
         href: '#matches',
         icon: 'futbol-o',
         title: 'Matches'

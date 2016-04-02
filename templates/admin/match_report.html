@@ -1,13 +1,17 @@
-^tmp_admin=head^
 <div class="col-md-9">
-    ^tmp_admin=elements=error_success^
-    ^tmp_admin=elements=sub_nav^
-    ^tmp_admin=elements=tab_nav^
-    <div class="tab-content">
-      <div class="tab-pane active" id="match-report">
-		    <h3>Match report</h3> 
-      </div>
+  <div class="row">
+    <div class="input-group" style="margin-bottom: .5em">
+      <input type="text" ng-model="searchText" ng-change="search()" ng-model-options="{'debounce': 400}" class="form-control"></input>
+      <span class="input-group-btn">
+          <button class="btn btn-default" type="button"><i class="fa" ng-class="{'fa-search': !searchText.length, 'fa-times': searchText.length}" ng-click="clearSearch()"></i></button>
+      </span>
     </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <p ng-repeat="match in clubManager.matches">{{match.title}}</p>
+      <p>{{clubManager.stats}}</p>
+    </div>
+  </div>
 </div>
-^angular^
-^tmp_admin=footer^
+^tmp_angular=admin=match^
