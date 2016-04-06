@@ -46,9 +46,8 @@ module.exports = function(pb) {
             pills: pb.AdminSubnavService.get(SUB_NAV_KEY, self.ls),
             access: self.session.authentication.admin_level,
             tabs: self.getTabs(),
-            clubManager: adminData
           };
-          var angularData = pb.ClientJs.getAngularController(objects, []);
+          var angularData = pb.ClientJs.getAngularController(objects, ['ui.bootstrap']);
           cb(null, angularData);
         }); 
         cb(null);

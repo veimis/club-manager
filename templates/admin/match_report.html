@@ -1,17 +1,16 @@
-<div class="col-md-9">
+<div class="col-md-9 ng-scope" ng-controller="MatchController">
   <div class="row">
-    <div class="input-group" style="margin-bottom: .5em">
-      <input type="text" ng-model="searchText" ng-change="search()" ng-model-options="{'debounce': 400}" class="form-control"></input>
-      <span class="input-group-btn">
-          <button class="btn btn-default" type="button"><i class="fa" ng-class="{'fa-search': !searchText.length, 'fa-times': searchText.length}" ng-click="clearSearch()"></i></button>
-      </span>
-    </div>
+    <p>Typeahead test</p>
+    <input type="text" ng-model="selected" uib-typeahead="match.title for match in matches" class="form-control">
   </div>
   <div class="row">
     <div class="col-md-3">
-      <p ng-repeat="match in clubManager.matches">{{match.title}}</p>
+      <p ng-repeat="match in matches">{{match.title}}</p>
       <p>{{clubManager.stats}}</p>
     </div>
   </div>
 </div>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.js"></script>
+<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.3.1.js"></script>
 ^tmp_angular=admin=match^
+
