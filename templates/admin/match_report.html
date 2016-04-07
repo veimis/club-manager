@@ -2,11 +2,24 @@
   <div class="row">
     <input type="text" ng-model="selected" uib-typeahead="match as match.title for match in matches | filter:$viewValue | limitTo:8" placeholder="Select match" class="form-control">
   </div>
-  <div class="row">
-    <div class="col-md-3">
-      {{selected}}
+  <div class="row" ng-show="selected._id">
+    <div class="col-md-6">
+      <h1>Match: {{selected.title}}</h1>
+      <p>{{selected.description}}</p>
+    </div>
+    <div class="col-md-6">
+      <h1>Statistics</h1>
+      <!-- match statistics controls -->
+      ^tmp_admin=match_statistics_control_form^
+      <!-- list match statistics -->
+      <ul>
+        <li ng-repeat="stat in stats">
+          {{stat.time}}&apos; {{stat.type}}: {{stat.player.name}}
+        </li>
+      </ul>
     </div>
   </div>
+  {{selected}}
 </div>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.js"></script>
 <script type="text/javascript" src="/js/ui-bootstrap-tpls.js"></script>

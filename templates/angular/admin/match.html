@@ -2,6 +2,19 @@
   angular.module('pencilblueApp')
     .controller('MatchController', function($scope, $sce) {
     ^angular_objects^
+
+    // Set default value for statistics type
+    $scope.statType = "goal";
+
+    // Add new statistics
+    $scope.addStat = function() {
+      $scope.stats.push({
+        "type": $scope.statType,
+        "time": $scope.statTime,
+        "match": $scope.selected,
+        "player": $scope.player
+      });
+    };
   });
 </script>
 

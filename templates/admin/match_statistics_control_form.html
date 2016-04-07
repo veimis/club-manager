@@ -1,0 +1,13 @@
+<form name="statControls">
+  <!-- Select stat type -->
+  <select name="statType" ng-model="statType">
+    <option value="goal">Goal</option>
+    <option value="assist">Assist</option>
+    <option value="booking">Booking</option>
+  </select>
+  <input type="text" ng-model="statTime">
+  <!-- select player -->
+  <input type="text" ng-model="player" uib-typeahead="player as player.name for player in selected.players | filter:$viewValue | limitTo:8" placeholder="Select player" class="form-control">
+  <!-- input options based on stat type -->
+  <button ng-click="addStat()">Add statistics</button>
+</form>
