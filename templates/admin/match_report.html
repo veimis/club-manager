@@ -1,12 +1,10 @@
 <div class="col-md-9 ng-scope" ng-controller="MatchController">
   <div class="row">
-    <p>Typeahead test</p>
-    <input type="text" ng-model="selected" uib-typeahead="match.title for match in matches | filter:$viewValue | limitTo:10" class="form-control">
+    <input type="text" ng-model="selected" uib-typeahead="match as match.title for match in matches | filter:$viewValue | limitTo:8" placeholder="Select match" class="form-control">
   </div>
   <div class="row">
     <div class="col-md-3">
-      <p ng-repeat="match in matches">{{match.title}}</p>
-      <p>{{clubManager.stats}}</p>
+      {{selected}}
     </div>
   </div>
 </div>
