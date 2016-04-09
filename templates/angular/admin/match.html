@@ -11,14 +11,15 @@
       const newStat = {
         "type": $scope.statType,
         "time": $scope.statTime,
-        "match": $scope.selected,
-        "player": $scope.player
+        "matchId": $scope.selected._id,
+        "playerId": $scope.player._id,
+        "playerName": $scope.player.name
       };
       // TODO send to server
       $http.post("/club-manager/api/stats", newStat)
         .then(
           function(response) {
-            $scope.stats.push(newStat);
+            $scope.selected.stats.push(newStat);
          } 
         );
     };

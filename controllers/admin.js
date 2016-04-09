@@ -50,7 +50,7 @@ module.exports = function(pb) {
           var angularData = pb.ClientJs.getAngularController(objects, ['ui.bootstrap']);
           cb(null, angularData);
         }); 
-        cb(null);
+        cb(null, adminData);
       }],
     function(err, waterfallResult) {
       self.ts.load('/admin/admin', function(err, result) {
