@@ -1,8 +1,10 @@
 // Inherit from pb base api controller
 
+const matchStats = require('../../lib/match_statistics.js');
+
 module.exports = function(pb) {
   // Pencilblue dependencies
-  var util = pb.util;
+  const util = pb.util;
 
   function MatchApiController(){}
   util.inherits(MatchApiController, pb.BaseApiController);
@@ -23,7 +25,9 @@ module.exports = function(pb) {
 
   // Save new statistics
   MatchApiController.prototype.saveStats = function(cb) {
-    console.log(this.body);
+    matchStats.save(this.body, new pb.DAO(), util, function(err, result) {
+      cb({});
+    });
   };
 
   return MatchApiController;
