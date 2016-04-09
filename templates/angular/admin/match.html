@@ -1,6 +1,6 @@
 <script type="text/javascript">
   angular.module('pencilblueApp')
-    .controller('MatchController', function($scope, $sce) {
+    .controller('MatchController', function($scope, $sce, $http) {
     ^angular_objects^
 
     // Set default value for statistics type
@@ -8,12 +8,19 @@
 
     // Add new statistics
     $scope.addStat = function() {
-      $scope.stats.push({
+      const newStat = {
         "type": $scope.statType,
         "time": $scope.statTime,
         "match": $scope.selected,
         "player": $scope.player
-      });
+      };
+      // TODO send to server
+      $http.post("/club-manager/api/stats", newStat)
+        .then(
+          function(response) {
+            $scope.stats.push(newStat);
+         } 
+        );
     };
   });
 </script>
