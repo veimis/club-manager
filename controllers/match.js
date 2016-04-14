@@ -50,26 +50,26 @@ module.exports = function(pb) {
     
     // Query data
     cmMatch.loadByName(self.query.name, cos, util, function(err, data) {
-	  cmMatchStats.loadByMatch(data[0]._id, new pb.DAO(), util, function(err, stats) {
-		// Register angular objects for match controller
-		var angularData = {
-		  match: data[0],
-		};
-		angularData.match.stats = stats;
+      cmMatchStats.loadByMatch(data[0]._id, new pb.DAO(), util, function(err, stats) {
+        // Register angular objects for match controller
+        var angularData = {
+          match: data[0],
+        };
+        angularData.match.stats = stats;
 
-		var angularObjects = pb.ClientJs.getAngularObjects(angularData);
-		self.ts.registerLocal('angular_objects', new pb.TemplateValue(angularObjects, false));
+        var angularObjects = pb.ClientJs.getAngularObjects(angularData);
+        self.ts.registerLocal('angular_objects', new pb.TemplateValue(angularObjects, false));
 
-		cmUtils.defaultTemplateValues(pb, self, function(err) {
-		  self.ts.load('matchStandAlone', function(err, result) {
-			if(util.isError(err)) {
-			  throw err;
-			}
+        cmUtils.defaultTemplateValues(pb, self, function(err) {
+          self.ts.load('matchStandAlone', function(err, result) {
+            if(util.isError(err)) {
+              throw err;
+            }
 
-			cb({content: result});
-		  });
-		});
-	  });
+            cb({content: result});
+          });
+        });
+      });
     });
   };
 
