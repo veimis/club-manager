@@ -12,6 +12,8 @@
     // 1st half over time: 45 minutes + 1-9 extra time minutes |
     // 2nd half over time: 90 minutes + 1-9 extra time minutes
     const extraTimeRegex = "|^45\\+[1-9]$|^90\\+[1-9]$";
+    
+    // Combine to single regex
     $scope.statTimeRegex = gameTimeRegex + extraTimeRegex;
 
     // Add new statistics
@@ -48,6 +50,11 @@
       if(statTimes.length > 1) {
         newStat.extraTime = Number(statTimes[1]);
       }
+    };
+
+    // Delete existing statistic
+    $scope.deleteStat = function(stat) {
+      console.log(stat);
     };
   });
 </script>

@@ -1,13 +1,13 @@
 <form name="statControls">
   <!-- Select stat type -->
-  <select name="statType" ng-model="statType">
+  <select name="statType" ng-model="statType" class="form-control">
     <option value="goal">Goal</option>
     <option value="assist">Assist</option>
     <option value="booking">Booking</option>
   </select>
-  Time: <input type="text" name="statTime" ng-model="statTime" ng-pattern="statTimeRegex">
+  <input type="text" name="statTime" ng-model="statTime" ng-pattern="statTimeRegex" class="form-control" placeholder="Game time in minutes. For example 20 or 45+2">
   <!-- select player -->
-  <input type="text" ng-model="player" uib-typeahead="player as player.name for player in selected.players | filter:$viewValue | limitTo:8" placeholder="Select player" class="form-control">
+  <input type="text" ng-model="player" uib-typeahead="player as player.name for player in selected.players | filter:$viewValue | limitTo:8" placeholder="Type player name" class="form-control">
   <!-- input options based on stat type -->
   <button ng-click="addStat()">Add statistics</button>
 </form>
