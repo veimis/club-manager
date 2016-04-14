@@ -13,7 +13,7 @@
       ^tmp_admin=match_statistics_control_form^
       <!-- list match statistics -->
       <ul>
-        <li ng-repeat="stat in selected.stats">
+        <li ng-repeat="stat in selected.stats | orderBy:'time'">
           {{stat.time}}&apos; {{stat.type}}: {{stat.playerName}}
         </li>
       </ul>
