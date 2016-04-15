@@ -16,7 +16,7 @@
       <!-- list match statistics -->
       <ul class="list-group">
         <li class="list-group-item" ng-repeat="stat in selected.stats | orderBy:'time'">
-          {{stat.time}}&apos;
+          {{stat.time}}{{stat.extraTime ? "+"+stat.extraTime : ''}}&apos;
           <i ng-class="getStatIcon(stat.type)"></i>
           : {{stat.playerName}}
           <div class="pull-right action-buttons">
