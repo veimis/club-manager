@@ -64,6 +64,16 @@
         }
       );
     };
+
+    // Get statistics icon
+    $scope.getStatIcon = function(statType) {
+      if(statType === "goal") {
+        return "fa fa-futbol-o";
+      }
+      else if(statType === "assist") {
+        return "fa fa-user-plus";
+      }
+    };
   });
 </script>
 
