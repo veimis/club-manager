@@ -18,6 +18,13 @@ module.exports = function(pb) {
       content_type: 'application/json',
       request_body: ['application/json', 'application/x-www-form-urlencoded', 'multipart/form-data'],
       handler: 'saveStats'
+      }, {
+      method: "post",
+      path: "/club-manager/api/deleteStats",
+      auth_required: true,
+      content_type: 'application/json',
+      request_body: ['application/json', 'application/x-www-from-urlencoded', 'multipart/form-data'],
+      handler: 'deleteStats'
     }];
 
     cb(null, routes);
@@ -26,6 +33,13 @@ module.exports = function(pb) {
   // Save new statistics
   MatchApiController.prototype.saveStats = function(cb) {
     matchStats.save(this.body, new pb.DAO(), util, function(err, result) {
+      cb({});
+    });
+  };
+
+  // Delete statistics
+  MatchApiController.prototype.deleteStats = function(cb) {
+    matchStats.delete(this.body.id, new pb.DAO(), util, function(err, result) {
       cb({});
     });
   };

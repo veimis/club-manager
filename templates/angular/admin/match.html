@@ -28,8 +28,6 @@
       // Get stat time
       $scope.getStatTime(newStat, $scope.statTime);
 
-      console.log(newStat);
-
       // Send data to the server
       $http.post("/club-manager/api/stats", newStat)
       .then(
@@ -54,7 +52,17 @@
 
     // Delete existing statistic
     $scope.deleteStat = function(stat) {
-      console.log(stat);
+      $http.post("/club-manager/api/deleteStats", { id: stat._id })
+      .then(
+        function(response) {
+          angular.forEach($scope.selected.stats, function(obj, i) {
+            if($scope.selected.stats[i]._id === stat._id) {
+              $scope.selected.stats.splice(i, 1);
+              return;
+            }
+          });
+        }
+      );
     };
   });
 </script>
