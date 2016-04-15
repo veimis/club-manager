@@ -1,15 +1,26 @@
 <form name="statControls">
 <div class="form-group">
   <!-- Select stat type -->
-  <select name="statType" ng-model="statType" class="form-control">
-    <option value="goal">Goal</option>
-    <option value="assist">Assist</option>
-    <option value="booking">Booking</option>
-  </select>
+  <label class="radio-inline">
+    <input type="radio" name="statTypeRadio" ng-model="statType" id="statTypeGoal" value="goal"
+checked>
+      <i class="fa fa-futbol-o"></i> Goal
+    </input>
+  </label>
+  <label class="radio-inline">
+    <input type="radio" name="statTypeRadio" ng-model="statType" id="statTypeAssist" value="assist">
+      <i class="fa fa-user-plus"></i> Assist
+    </input>
+  </label>
+  <label class="radio-inline">
+    <input type="radio" name="statTypeRadio" ng-model="statType" id="statTypeBooking" value="booking">
+      <i class="fa fa-ban"></i> Booking
+    </input>
+  </label>
   <input type="text" name="statTime" ng-model="statTime" ng-pattern="statTimeRegex" class="form-control" placeholder="Game time in minutes. For example 20 or 45+2">
   <!-- select player -->
   <input type="text" ng-model="player" uib-typeahead="player as player.name for player in selected.players | filter:$viewValue | limitTo:8" placeholder="Type player name" class="form-control">
   <!-- input options based on stat type -->
-  <button type="button" class="btn-block" ng-click="addStat()">Add statistics</button>
+  <button type="button" ng-disabled="statControls.$invalid" class="btn-block" ng-click="addStat()">Add statistics</button>
 </div>
 </form>
