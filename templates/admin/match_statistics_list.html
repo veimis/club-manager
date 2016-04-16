@@ -1,0 +1,20 @@
+<div class="list-group">
+  <div ng-repeat="stat in selected.stats | orderBy:'time'">
+    <div class="list-group-item">
+      {{stat.time}}{{stat.extraTime ? "+"+stat.extraTime : ''}}&apos;
+      <i ng-class="getStatIcon(stat.type)"></i>
+      : {{stat.playerName}}
+      <div class="pull-right action-buttons">
+        <a href="#" ng-if="stat.type === 'goal'" ng-click="showAssistControls(stat)"><span class="fa fa-user-plus"></span></a>
+        <a href="#" ng-click="deleteStat(stat)"><span class="fa fa-times"></span></a>
+      </div>
+    </div>
+    <!-- select assisting player -->
+    <div ng-if="stat.type === 'goal'" ng-show="assistForGoal === stat._id" class="">
+      <div class="input-group">
+        <div class="input-group-addon"><span class="fa fa-user-plus"></span></div>
+      <input type="text" ng-model="assistPlayer" uib-typeahead="player as player.name for player in selected.players | filter:$viewValue | limitTo:8" placeholder="Type player name" class="form-control">
+      <a href="#" ng-click="" class="input-group-addon"><span class="fa fa-plus"></span></a>
+    </div>
+  </div>
+</div>

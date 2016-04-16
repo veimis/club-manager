@@ -6,6 +6,9 @@
     // Set default value for statistics type
     $scope.statType = "goal";
 
+    // Which goal the assisting player search is shown
+    $scope.assistForGoal = null;
+
     // Regex pattern to match statistics time:
     // Minutes 1-9 | minutes from 10-89 and 90| 
     const gameTimeRegex = "^[1-9]$|^[1-8][0-9]$|^90$";
@@ -32,6 +35,7 @@
       $http.post("/club-manager/api/stats", newStat)
       .then(
         function(response) {
+          // TODO needs to receive the id, showing assist controls dependds on it.
           $scope.selected.stats.push(newStat);
         } 
       );
@@ -73,6 +77,14 @@
       else if(statType === "assist") {
         return "fa fa-user-plus";
       }
+      else {
+        return "fa fa-question";
+      }
+    };
+
+    // Show assisting player search for given goal.
+    $scope.showAssistControls = function(goal) {
+      $scope.assistForGoal = goal._id;
     };
   });
 </script>

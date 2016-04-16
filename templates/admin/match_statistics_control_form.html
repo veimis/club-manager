@@ -8,19 +8,19 @@ checked>
     </input>
   </label>
   <label class="radio-inline">
-    <input type="radio" name="statTypeRadio" ng-model="statType" id="statTypeAssist" value="assist">
-      <i class="fa fa-user-plus"></i> Assist
-    </input>
-  </label>
-  <label class="radio-inline">
     <input type="radio" name="statTypeRadio" ng-model="statType" id="statTypeBooking" value="booking">
       <i class="fa fa-ban"></i> Booking
     </input>
   </label>
-  <input type="text" name="statTime" ng-model="statTime" ng-pattern="statTimeRegex" class="form-control" placeholder="Game time in minutes. For example 20 or 45+2">
-  <!-- select player -->
-  <input type="text" ng-model="player" uib-typeahead="player as player.name for player in selected.players | filter:$viewValue | limitTo:8" placeholder="Type player name" class="form-control">
-  <!-- input options based on stat type -->
-  <button type="button" ng-disabled="statControls.$invalid" class="btn-block" ng-click="addStat()">Add statistics</button>
+  <!-- Goal controls -->
+  <div ng-show="statType === 'goal'">
+    <input type="text" name="statTime" ng-model="statTime" ng-pattern="statTimeRegex" class="form-control" placeholder="Game time in minutes. For example 20 or 45+2"></input>
+    <!-- select player -->
+    <input type="text" ng-model="player" uib-typeahead="player as player.name for player in selected.players | filter:$viewValue | limitTo:8" placeholder="Type player name" class="form-control"></input>
+  </div>
+  <!-- Booking controls -->
+  <div ng-show="statType === 'booking'">
+  </div>
+  <button type="button" ng-disabled="statControls.$invalid" class="btn-block" ng-click="addStat()">Add {{statType}}</button>
 </div>
 </form>
