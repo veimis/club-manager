@@ -64,6 +64,7 @@
     $scope.addAssist = function(goal) {
       const newAssist = {
         "type": "assist",
+        "goalId": goal._id,
         "matchId": goal.matchId,
         "playerId": $scope.assistPlayer._id,
         "playerName": $scope.assistPlayer.name

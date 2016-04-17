@@ -1,5 +1,6 @@
 <div class="list-group">
-  <div ng-repeat="stat in selected.stats | orderBy:'time'">
+  <!-- Show statistics, no including assists -->
+  <div ng-repeat="stat in selected.stats | filter:{type:'!assist'} | orderBy:'time'">
     <div class="list-group-item">
       {{stat.time}}{{stat.extraTime ? "+"+stat.extraTime : ''}}&apos;
       <i ng-class="getStatIcon(stat.type)"></i>
@@ -8,13 +9,21 @@
         <a href="#" ng-if="stat.type === 'goal'" ng-click="showAssistControls(stat)"><span class="fa fa-user-plus"></span></a>
         <a href="#" ng-click="deleteStat(stat)"><span class="fa fa-times"></span></a>
       </div>
+      <!-- Show assists for the goal -->
+      <div class="list-group">
+        <div class="list-group-item" ng-repeat="assist in $parent.selected.stats | filter:{type:'assist', goalId: stat._id}">
+          <i class="fa fa-user"></i>
+          {{assist.playerName}}
+          <a href="#" ng-click="deleteStat(assist)"><span class="fa fa-times"></span></a>
+        </div>
+        <!-- Add new assisting player controls -->
+          <div ng-if="stat.type === 'goal'" ng-show="assistForGoal === stat._id" class="input-group">
+            <div class="input-group-addon"><span class="fa fa-user-plus"></span></div>
+            <!-- Both ng-repeat and ng-if create new scope.
+                 To access the parent scope we then need $parent.$parent -->
+            <input type="text" ng-model="$parent.$parent.assistPlayer" uib-typeahead="player as player.name for player in selected.players | filter:$viewValue | limitTo:8" placeholder="Type player name" class="form-control"></input>
+            <a href="#" ng-click="addAssist(stat)" class="input-group-addon"><span class="fa fa-plus"></span></a>
+        </div>
+      </div>
     </div>
-    <!-- select assisting player -->
-    <div ng-if="stat.type === 'goal'" ng-show="assistForGoal === stat._id" class="input-group">
-      <div class="input-group-addon"><span class="fa fa-user-plus"></span></div>
-      <!-- Both ng-repeat and ng-if create new scope.
-           To access the parent scope we then need $parent.$parent -->
-      <input type="text" ng-model="$parent.$parent.assistPlayer" uib-typeahead="player as player.name for player in selected.players | filter:$viewValue | limitTo:8" placeholder="Type player name" class="form-control"></input>
-      <a href="#" ng-click="addAssist(stat)" class="input-group-addon"><span class="fa fa-plus"></span></a>
-  </div>
 </div>
