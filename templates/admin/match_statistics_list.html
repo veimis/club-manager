@@ -10,11 +10,11 @@
       </div>
     </div>
     <!-- select assisting player -->
-    <div ng-if="stat.type === 'goal'" ng-show="assistForGoal === stat._id" class="">
-      <div class="input-group">
-        <div class="input-group-addon"><span class="fa fa-user-plus"></span></div>
-      <input type="text" ng-model="assistPlayer" uib-typeahead="player as player.name for player in selected.players | filter:$viewValue | limitTo:8" placeholder="Type player name" class="form-control">
-      <a href="#" ng-click="" class="input-group-addon"><span class="fa fa-plus"></span></a>
-    </div>
+    <div ng-if="stat.type === 'goal'" ng-show="assistForGoal === stat._id" class="input-group">
+      <div class="input-group-addon"><span class="fa fa-user-plus"></span></div>
+      <!-- Both ng-repeat and ng-if create new scope.
+           To access the parent scope we then need $parent.$parent -->
+      <input type="text" ng-model="$parent.$parent.assistPlayer" uib-typeahead="player as player.name for player in selected.players | filter:$viewValue | limitTo:8" placeholder="Type player name" class="form-control"></input>
+      <a href="#" ng-click="addAssist(stat)" class="input-group-addon"><span class="fa fa-plus"></span></a>
   </div>
 </div>

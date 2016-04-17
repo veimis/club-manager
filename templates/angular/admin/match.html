@@ -19,9 +19,13 @@
     // Combine to single regex
     $scope.statTimeRegex = gameTimeRegex + extraTimeRegex;
 
+    //////////////////////////////////////////////////////
+    //
     // Add new statistics
-    $scope.addStat = function() {
-      const newStat = {
+    //
+    //////////////////////////////////////////////////////
+    $scope.addGoal = function() {
+      const newGoal = {
         "type": $scope.statType,
         "matchId": $scope.selected._id,
         "playerId": $scope.player._id,
@@ -29,9 +33,18 @@
       };
 
       // Get stat time
-      $scope.getStatTime(newStat, $scope.statTime);
+      $scope.getStatTime(newGoal, $scope.statTime);
+      
+      // Send to server
+      $scope.addStat(newGoal);
+     };
 
-      // Send data to the server
+    /////////////////////////////////////////////////////
+    //
+    // Send new statistics data to the server.
+    //
+    /////////////////////////////////////////////////////
+    $scope.addStat = function(newStat) {
       $http.post("/club-manager/api/stats", newStat)
       .then(
         function(response) {
@@ -39,9 +52,32 @@
           $scope.selected.stats.push(newStat);
         } 
       );
+
     };
 
+
+    /////////////////////////////////////////////////////
+    //
+    // Add assist
+    //
+    /////////////////////////////////////////////////////
+    $scope.addAssist = function(goal) {
+      const newAssist = {
+        "type": "assist",
+        "matchId": goal.matchId,
+        "playerId": $scope.assistPlayer._id,
+        "playerName": $scope.assistPlayer.name
+      };
+
+      // Send to server
+      $scope.addStat(newAssist);
+    };
+
+    //////////////////////////////////////////////////////
+    //
     // Get statistics time
+    //
+    //////////////////////////////////////////////////////
     $scope.getStatTime = function(newStat, time) {
       // Stat time is validated for time+extra minutes,
       // for example 45+2, where extra time is optional.
@@ -54,7 +90,11 @@
       }
     };
 
+    /////////////////////////////////////////////////////
+    //
     // Delete existing statistic
+    //
+    /////////////////////////////////////////////////////
     $scope.deleteStat = function(stat) {
       $http.post("/club-manager/api/deleteStats", { id: stat._id })
       .then(
@@ -69,7 +109,11 @@
       );
     };
 
+    /////////////////////////////////////////////////////
+    //
     // Get statistics icon
+    //
+    /////////////////////////////////////////////////////
     $scope.getStatIcon = function(statType) {
       if(statType === "goal") {
         return "fa fa-futbol-o";
@@ -82,7 +126,11 @@
       }
     };
 
+    /////////////////////////////////////////////////////
+    //
     // Show assisting player search for given goal.
+    //
+    /////////////////////////////////////////////////////
     $scope.showAssistControls = function(goal) {
       $scope.assistForGoal = goal._id;
     };
