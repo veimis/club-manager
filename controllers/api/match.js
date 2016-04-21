@@ -33,7 +33,12 @@ module.exports = function(pb) {
   // Save new statistics
   MatchApiController.prototype.saveStats = function(cb) {
     matchStats.save(this.body, new pb.DAO(), util, function(err, result) {
-      cb({});
+      // Set response content: Send to the client.
+      const response = {
+        content: result._id
+      };
+
+      cb(response);
     });
   };
 

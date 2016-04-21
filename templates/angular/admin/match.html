@@ -48,7 +48,8 @@
       $http.post("/club-manager/api/stats", newStat)
       .then(
         function(response) {
-          // TODO needs to receive the id, showing assist controls dependds on it.
+          // Set stat id that was returned by the server.
+          newStat._id = response.data;
           $scope.selected.stats.push(newStat);
         } 
       );
