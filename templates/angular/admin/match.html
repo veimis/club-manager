@@ -53,7 +53,6 @@
           $scope.selected.stats.push(newStat);
         } 
       );
-
     };
 
 
@@ -82,7 +81,7 @@
     //////////////////////////////////////////////////////
     $scope.getStatTime = function(newStat, time) {
       // Stat time is validated for time+extra minutes,
-      // for example 45+2, where extra time is optional.
+      // where extra time is optional. For example 45+2.
       const statTimes = time.split('+');
       newStat.time = Number(statTimes[0]);
       
@@ -98,11 +97,12 @@
     //
     /////////////////////////////////////////////////////
     $scope.deleteStat = function(stat) {
-      $http.post("/club-manager/api/deleteStats", { id: stat._id })
+      $http.post("/club-manager/api/deleteStats", { id: stat._id, type: stat.type })
       .then(
         function(response) {
           angular.forEach($scope.selected.stats, function(obj, i) {
             if($scope.selected.stats[i]._id === stat._id) {
+              // Remove deleted stat from the UI.
               $scope.selected.stats.splice(i, 1);
               return;
             }
@@ -122,6 +122,12 @@
       }
       else if(statType === "assist") {
         return "fa fa-user-plus";
+      }
+      else if(statType === "warning") {
+        return "fa fa-bookmark-o";
+      }
+      else if(statType === "penalty") {
+        return "fa fa-bookmark";
       }
       else {
         return "fa fa-question";
