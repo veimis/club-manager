@@ -1,4 +1,5 @@
 <div class="list-group">
+<form name="assistControls" novalidate>
   <!-- Show statistics, no including assists -->
   <div ng-repeat="stat in selected.stats | filter:{type:'!assist'} | orderBy:'time'">
     <div class="list-group-item">
@@ -17,14 +18,17 @@
           <a href="#" ng-click="deleteStat(assist)"><span class="fa fa-times"></span></a>
         </div>
         <!-- Add new assisting player controls -->
-        <div ng-if="stat.type === 'goal'" ng-show="assistForGoal === stat._id" class="input-group">
+        <ng-form name="assistFields" ng-if="stat.type === 'goal'" ng-show="assistForGoal === stat._id" class="input-group">
           <div class="input-group-addon"><span class="fa fa-user-plus"></span></div>
             <!-- Both ng-repeat and ng-if create new scope.
                  To access the parent scope we then need $parent.$parent -->
-          <input type="text" ng-model="$parent.$parent.assistPlayer" uib-typeahead="player as player.name for player in selected.players | filter:$viewValue | limitTo:8" placeholder="Type player name" class="form-control"></input>
-          <a href="#" ng-click="addAssist(stat)" class="input-group-addon"><span class="fa fa-plus"></span></a>
-        </div>
+          <input type="text" name="assistP" ng-model="$parent.$parent.assistPlayer" uib-typeahead="player as player.name for player in selected.players | filter:$viewValue | limitTo:8" typeahead-editable="false" placeholder="Type player name" class="form-control" required></input>
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" ng-click="addAssist(stat)" ng-disabled="assistFields.assistP.$invalid"><span class="fa fa-plus"></span></button>
+          </span>
+        </ng-form>
       </div>
     </div>
   </div>
+</form>
 </div>

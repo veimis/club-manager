@@ -10,6 +10,6 @@
   <input type="text" name="statTime" ng-model="statTime" ng-model-options="{debounce: 250}" ng-pattern="statTimeRegex" class="form-control" placeholder="Game time in minutes. For example 20 or 45+2" required></input>
   <!-- select player -->
   <input type="text" name="player" ng-model="player" uib-typeahead="player as player.name for player in selected.players | filter:$viewValue | limitTo:8" typeahead-editable="false" placeholder="Type player name" class="form-control" required></input>
-  <button type="button" ng-disabled="statControls.$invalid" class="btn-block" ng-click="addGoal()">Add {{statType}}</button>
+  <button type="button" class="btn btn-block btn-default" ng-disabled="statControls.$invalid" ng-click="addGoal()">Add {{statType}}</button>
 </div>
 </form>
