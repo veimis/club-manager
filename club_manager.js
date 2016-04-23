@@ -68,7 +68,7 @@ module.exports = function ClubManagerPlugin(pb){
     // The order may have importance, because of the dependencies
 		async.series([
       function(cb) {
-        cmMatchStatistics.uninstall(cos, util, cb);
+        cmMatchStatistics.uninstall(new pb.DAO(), util, cb);
       },
       function(cb){
 				cmMatch.uninstall(cos, util, cb);
@@ -96,7 +96,6 @@ module.exports = function ClubManagerPlugin(pb){
 	 */
 	ClubManager.onStartup = function(cb) {
 		// Modify admin navigation 
-    // TODO create and open admin views on the panel
     pb.AdminNavigation.add({
       id: TOP_MENU,
       title: 'Club manager',

@@ -6,7 +6,10 @@ module.exports = function(pb) {
   // Pencilblue dependencies
   const util = pb.util;
 
+  // Create controller
   function MatchApiController(){}
+
+  // Inherit from pencilblue bas API controller
   util.inherits(MatchApiController, pb.BaseApiController);
 
   ///////////////////////////////////////////////////////////////////
