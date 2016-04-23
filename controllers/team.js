@@ -38,8 +38,15 @@ module.exports = function(pb) {
         // Register angular objects for team controller
         var angularData = { 
           teams: data,
-          selected: data[0].players[0]
         };
+        
+        // Pre select player if available.
+        if(data.length > 0 && data[0].players.length >0 )
+        {
+          angularData.selected = data[0].players[0];
+        }
+
+        // Register angular objects for the template
         var angularObjects = pb.ClientJs.getAngularObjects(angularData);
         self.ts.registerLocal('angular_objects', new pb.TemplateValue(angularObjects, false));
         
