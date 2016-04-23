@@ -9,7 +9,12 @@ module.exports = function(pb) {
   function MatchApiController(){}
   util.inherits(MatchApiController, pb.BaseApiController);
 
+  ///////////////////////////////////////////////////////////////////
   // Register controller routes 
+  // Pencilblue will call getRoutes() for each controller in the
+  // controllers folder during initialization to regiser handlers
+  // for the routes.
+  ///////////////////////////////////////////////////////////////////
   MatchApiController.getRoutes = function(cb) {
     const routes = [{
       method: "post",
@@ -30,7 +35,9 @@ module.exports = function(pb) {
     cb(null, routes);
   };
 
+  ///////////////////////////////////////////////////////////////////
   // Save new statistics
+  ///////////////////////////////////////////////////////////////////
   MatchApiController.prototype.saveStats = function(cb) {
     matchStats.save(this.body, new pb.DAO(), util, function(err, result) {
       // Set response content: Send to the client.
@@ -42,7 +49,9 @@ module.exports = function(pb) {
     });
   };
 
+  ///////////////////////////////////////////////////////////////////
   // Delete statistics
+  ///////////////////////////////////////////////////////////////////
   MatchApiController.prototype.deleteStats = function(cb) {
     matchStats.delete(this.body.id, this.body.type, new pb.DAO(), util, function(err, result) {
       cb({});

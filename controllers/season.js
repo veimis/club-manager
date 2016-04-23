@@ -19,7 +19,12 @@ module.exports = function(pb) {
 	// localization service, request and response handlers
 	util.inherits(SeasonController, BaseController);
 
-	// Register routes
+  ///////////////////////////////////////////////////////////////////
+	// Register routes.
+  // Pencilblue will call getRoutes() for each controller in the
+  // controllers folder during initialization to regiser handlers
+  // for the routes.
+  ///////////////////////////////////////////////////////////////////
 	SeasonController.getRoutes = function(cb) {
 		var routes = [
 			{
@@ -33,8 +38,10 @@ module.exports = function(pb) {
 		cb(null, routes);
 	};	
   
+  ///////////////////////////////////////////////////////////////////
   // Render season template
 	// cb = callback(result)
+  ///////////////////////////////////////////////////////////////////
 	SeasonController.prototype.render = function(cb) {	
 		var self = this;
 		var cos = new pb.CustomObjectService();
@@ -60,13 +67,14 @@ module.exports = function(pb) {
         if(util.isError(err)) {
           throw err;
         }
-		getStats(self, matches, new pb.DAO(), util, function(err, matches) {
-		  renderSeason(self, matches, util, cmUtils, cb);
-		});
+        getStats(self, matches, new pb.DAO(), util, function(err, matches) {
+          renderSeason(self, matches, util, cmUtils, cb);
+        });
       });
     }
 	};
 
+  ///////////////////////////////////////////////////////////////////
   // Get match stats for given matches.
   // controller: This controller
   // matches: Collection of match objects
@@ -74,23 +82,26 @@ module.exports = function(pb) {
   // util: pencilblue utilities
   // cmUtils: Club manager utilities
   // cb = callback(err, data)
+  ///////////////////////////////////////////////////////////////////
   function getStats(controller, matches, dao, util, cb) {
     async.each(matches, function(match, eachCb) {
       cmMatchStats.loadByMatch(match._id, dao, util, function(err, stats) {
         match.stats = stats;
         eachCb();
-	  });
-	}, function(err) {
-      cb(err, matches);
-	});
+      });
+    }, function(err) {
+        cb(err, matches);
+    });
   }
 
+  ///////////////////////////////////////////////////////////////////
   // Render given matches using the season template.
   // controller:  This controller, not sure how the scope works here.
   // matches: Matches that will be renderd
   // util:  Pencilblue utilites
   // cmUtils: Club manager utilities
   // cb = callback(result)
+  ///////////////////////////////////////////////////////////////////
   function renderSeason(controller, matches, util, cmUtils, cb) {
     cmUtils.defaultTemplateValues(pb, controller, function(err) {
       var ok = controller.ts.registerLocal('angular', function(flag, cb){
@@ -115,5 +126,6 @@ module.exports = function(pb) {
     });
   }
 	
+  // Return controller
   return SeasonController;
 };

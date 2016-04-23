@@ -14,10 +14,12 @@ module.exports = function(pb) {
   // localization service, request and response handlers.
   util.inherits(TeamController, pb.BaseController);
 
+  ///////////////////////////////////////////////////////////////////
   // Render team template
   // Render is executed within a domain context and errors thrown 
   //  will result in an error page.
   // cb = callback(result)
+  ///////////////////////////////////////////////////////////////////
   TeamController.prototype.render = function(cb) {
     var self = this;
     var cos = new pb.CustomObjectService();
@@ -58,7 +60,12 @@ module.exports = function(pb) {
     });
   };
   
+  ///////////////////////////////////////////////////////////////////
   // Register routes
+  // Pencilblue will call getRoutes() for each controller in the
+  // controllers folder during initialization to regiser handlers
+  // for the routes.
+  ///////////////////////////////////////////////////////////////////
   TeamController.getRoutes = function(cb) {
     var routes = [
       {
@@ -72,23 +79,25 @@ module.exports = function(pb) {
     cb(null, routes);
   };
  
+  ///////////////////////////////////////////////////////////////////
   // Get navigation
   // Copy from pencilblue/controllers/index.js
+  ///////////////////////////////////////////////////////////////////
   TeamController.prototype.getNavigation = function(cb) {
-      var options = {
-          currUrl: this.req.url,
-          session: this.session,
-          ls: this.ls,
-          activeTheme: this.activeTheme
-      };
-      
-      var menuService = new pb.TopMenuService();
-      menuService.getNavItems(options, function(err, navItems) {
-          if (util.isError(err)) {
-              pb.log.error('Index: %s', err.stack);
-          }
-          cb(navItems.themeSettings, navItems.navigation, navItems.accountButtons);
-      });
+    var options = {
+        currUrl: this.req.url,
+        session: this.session,
+        ls: this.ls,
+        activeTheme: this.activeTheme
+    };
+    
+    var menuService = new pb.TopMenuService();
+    menuService.getNavItems(options, function(err, navItems) {
+      if (util.isError(err)) {
+          pb.log.error('Index: %s', err.stack);
+      }
+      cb(navItems.themeSettings, navItems.navigation, navItems.accountButtons);
+    });
   };
 
   return TeamController;

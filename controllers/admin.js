@@ -20,10 +20,12 @@ module.exports = function(pb) {
   // Subnavigation key
   var SUB_NAV_KEY = 'club_manager_index';
   
+  ///////////////////////////////////////////////////////////////////
   // Render admin page
   // Render is executed within a domain context and errors thrown 
   // will be handled and result in an error page.
   // cb = callback(result)
+  ///////////////////////////////////////////////////////////////////
   AdminController.prototype.render = function(cb) {
     var self = this;
 
@@ -59,7 +61,12 @@ module.exports = function(pb) {
     });
   };
   
-  // Register routes
+  ///////////////////////////////////////////////////////////////////
+  // Register routes.
+  // Pencilblue will call getRoutes() for each controller in the
+  // controllers folder during initialization to regiser handlers
+  // for the routes.
+  ///////////////////////////////////////////////////////////////////
   AdminController.getRoutes = function(cb) {
     var routes = [
       {
@@ -74,6 +81,9 @@ module.exports = function(pb) {
     cb(null, routes);
   }; 
 
+  ///////////////////////////////////////////////////////////////////
+  // Return tab definition for the default theme admin view.
+  ///////////////////////////////////////////////////////////////////
   AdminController.prototype.getTabs = function() {
     return [
       {
@@ -100,6 +110,9 @@ module.exports = function(pb) {
     ];
   };
 
+  ///////////////////////////////////////////////////////////////////
+  // Get subnavigation items for the admin view.
+  ///////////////////////////////////////////////////////////////////
   AdminController.getSubNavItems = function(key, ls, data) {
     return [
       {
