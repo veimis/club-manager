@@ -13,9 +13,10 @@
         </div>
       </div>
       <div class="col-md-4">
-        <!-- list of players -->
+        <!-- List players of each team -->
         <div class="list-group" ng-repeat="team in teams">
           <a class="list-group-item active" >{{team.name}}</a>
+          <!-- list of players -->
           <a class="list-group-item" href="" ng-repeat="player in team.players" ng-click="showDetails(player)">{{player.name}} #{{player.number}}</a>
         </div>
       </div>
