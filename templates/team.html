@@ -1,7 +1,7 @@
 ^tmp_head^
   <div class="container" ng-controller="TeamController">
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-sm-8">
         <div ng-show="selected" class="ng-hide panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title">{{selected.name}} #{{selected.number}}</h3>
@@ -12,12 +12,12 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-sm-4">
         <!-- List players of each team -->
         <div class="list-group" ng-repeat="team in teams">
           <a class="list-group-item active" >{{team.name}}</a>
           <!-- list of players -->
-          <a class="list-group-item" href="" ng-repeat="player in team.players" ng-click="showDetails(player)">{{player.name}} #{{player.number}}</a>
+          <a class="list-group-item" href="#" ng-repeat="player in team.players" ng-click="showDetails(player)">{{player.name}} #{{player.number}}</a>
         </div>
       </div>
     </div>

@@ -41,7 +41,7 @@ module.exports = function(pb) {
         };
         
         // Pre select player if available.
-        if(data.length > 0 && data[0].players.length >0 )
+        if(data.length > 0 && data[0].players.length > 0)
         {
           angularData.selected = data[0].players[0];
         }
