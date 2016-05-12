@@ -2,6 +2,7 @@
 
 // Dependencies
 var cmUtils = require('../lib/club_manager_utils.js');
+var cmPlayer = require('../lib/player.js');
 
 module.exports = function(pb) {
   // Pencilblue dependencies
@@ -22,15 +23,32 @@ module.exports = function(pb) {
   ///////////////////////////////////////////////////////////////////
   PlayerController.prototype.render = function(cb) {
     const self = this;
-    console.log(self.query.name);
+    var cos = new pb.CustomObjectService();
+    var ms = new pb.MediaService();
     
-    cmUtils.defaultTemplateValues(pb, self, function(err) {
-      self.ts.load('player', function(err, result) {
-        if(util.isError(err)) {
-          throw err;
-        }
+    cmPlayer.findByName(self.query.name, cos, util, ms, function(err, player) {
+      cmUtils.defaultTemplateValues(pb, self, function(err) {
+        const angularData = {
+          player: player 
+        };
 
-        cb({content: result});
+        // Register angular objects for the template
+        var angularObjects = pb.ClientJs.getAngularObjects(angularData);
+        self.ts.registerLocal('angular_objects', new pb.TemplateValue(angularObjects, false));
+        
+        // Register angular controller for pencilblue navigation
+        var ok = self.ts.registerLocal('angular', function(flag, cb) {
+          var angularData = pb.ClientJs.getAngularController({}, ['ngSanitize']);
+          cb(null, angularData);
+        });          
+        
+        self.ts.load('player', function(err, result) {
+          if(util.isError(err)) {
+            throw err;
+          }
+
+          cb({content: result});
+        });
       });
     });
   };
