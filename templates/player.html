@@ -1,7 +1,10 @@
 ^tmp_head^
   <div class="container" ng-controller="PlayerController">
     <div class="row">
-      <div class="col-sm-8">
+      <div class="col-sm-5">
+        <img ng-src="{{player.profilePicture}}" alt="profile image" />
+      </div>
+      <div class="col-sm-7">
         <div class="panel panel-default">
           <div class="panel-heading">
             <span class="panel-title">
@@ -10,7 +13,6 @@
           </div>
           <div class="panel-body">
             <p>{{player.description}}</p>
-            <img ng-src="{{player.profilePicture.location}}" alt="profile image" />
           </div>
         </div>
       </div>
