@@ -1,8 +1,9 @@
 // Controller module for a team page showing the players of the club
 
 // Dependencies
-var cmUtils = require('../lib/club_manager_utils.js');
-var cmPlayer = require('../lib/player.js');
+const async = require('async');
+const cmUtils = require('../lib/club_manager_utils.js');
+const cmPlayer = require('../lib/player.js');
 
 module.exports = function(pb) {
   // Pencilblue dependencies
@@ -26,30 +27,37 @@ module.exports = function(pb) {
     var cos = new pb.CustomObjectService();
     var ms = new pb.MediaService();
     
-    cmPlayer.findByName(self.query.name, cos, util, ms, function(err, player) {
-      cmUtils.defaultTemplateValues(pb, self, function(err) {
-        const angularData = {
-          player: player 
-        };
+    async.waterfall([
+      // TODO: If a player is not found by name, show user that nothing was found with given player name.
+      async.apply(cmPlayer.findByName, self.query.name, cos, util, ms),
+      function(player, callback) {
+        cmUtils.defaultTemplateValues(pb, self, function(err) {
+          const angularData = {
+            player: player
+          };
 
-        // Register angular objects for the template
-        var angularObjects = pb.ClientJs.getAngularObjects(angularData);
-        self.ts.registerLocal('angular_objects', new pb.TemplateValue(angularObjects, false));
-        
-        // Register angular controller for pencilblue navigation
-        var ok = self.ts.registerLocal('angular', function(flag, cb) {
-          var angularData = pb.ClientJs.getAngularController({}, ['ngSanitize']);
-          cb(null, angularData);
-        });          
-        
-        self.ts.load('player', function(err, result) {
-          if(util.isError(err)) {
-            throw err;
-          }
+          // Register angular objects for the template
+          var angularObjects = pb.ClientJs.getAngularObjects(angularData);
+          self.ts.registerLocal('angular_objects', new pb.TemplateValue(angularObjects, false));
+          
+          // Register angular controller for pencilblue navigation
+          var ok = self.ts.registerLocal('angular', function(flag, cb) {
+            var angularData = pb.ClientJs.getAngularController({}, ['ngSanitize']);
+            cb(null, angularData);
+          });
 
-          cb({content: result});
-        });
-      });
+          callback(null);
+        }); 
+      },
+      function(callback) {
+        self.ts.load('player', callback);
+      }
+    ], 
+    function(err, result) {
+      if(util.isError(err)) {
+        throw err;
+      }
+      cb({content: result});
     });
   };
 
