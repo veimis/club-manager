@@ -4,6 +4,7 @@
 const async = require('async');
 const cmUtils = require('../lib/club_manager_utils.js');
 const cmPlayer = require('../lib/player.js');
+const cmStatistics = require('../lib/match_statistics.js');
 
 module.exports = function(pb) {
   // Pencilblue dependencies
@@ -17,10 +18,12 @@ module.exports = function(pb) {
   util.inherits(PlayerController, pb.BaseController);
 
   ///////////////////////////////////////////////////////////////////
+  //
   // Render player template
   // Render is executed within a domain context and errors thrown 
   //  will result in an error page.
   // cb = callback(result)
+  //
   ///////////////////////////////////////////////////////////////////
   PlayerController.prototype.render = function(cb) {
     const self = this;
@@ -31,7 +34,13 @@ module.exports = function(pb) {
       // TODO: If a player is not found by name, show user that nothing was found with given player name.
       async.apply(cmPlayer.findByName, self.query.name, cos, util, ms),
       function(player, callback) {
+        cmStatistics.loadByPlayer(player._id, new pb.DAO(), util, function(err, stats) {
+        callback(err, player, stats);
+        });
+      },
+      function(player, stats, callback) {
         cmUtils.defaultTemplateValues(pb, self, function(err) {
+          player.stats = stats;
           const angularData = {
             player: player
           };
@@ -63,9 +72,11 @@ module.exports = function(pb) {
 
   ///////////////////////////////////////////////////////////////////
   // Register routes
+  //
   // Pencilblue will call getRoutes() for each controller in the
   // controllers folder during initialization to regiser handlers
   // for the routes.
+  //
   ///////////////////////////////////////////////////////////////////
   PlayerController.getRoutes = function(cb) {
     var routes = [
