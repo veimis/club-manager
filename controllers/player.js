@@ -34,7 +34,7 @@ module.exports = function(pb) {
       // TODO: If a player is not found by name, show user that nothing was found with given player name.
       async.apply(cmPlayer.findByName, self.query.name, cos, util, ms),
       function(player, callback) {
-        cmStatistics.loadByPlayer(player._id, new pb.DAO(), util, function(err, stats) {
+        cmStatistics.loadPlayerTotals(player._id, new pb.DAO(), util, function(err, stats) {
         callback(err, player, stats);
         });
       },
