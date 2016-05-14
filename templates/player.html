@@ -15,10 +15,21 @@
             <p>{{player.description}}</p>
           </div>
         </div>
+        <div style="font-size:34px">
+          <i ng-class="statistics.getIcon('goal')"></i>
+          {{player.goals}}
+          <i ng-class="statistics.getIcon('assist')"></i>
+          {{player.assists}}
+          <i ng-class="statistics.getIcon('warning')"></i>
+          {{player.warnings}}
+          <i ng-class="statistics.getIcon('penalty')"></i>
+          {{player.penalties}}
+        </div>
       </div>
     </div>
   </div>
   ^angular^
+  ^tmp_angular=statsService^
   ^tmp_angular=player^
 ^tmp_footer^
 
