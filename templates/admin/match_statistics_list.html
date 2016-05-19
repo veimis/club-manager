@@ -2,7 +2,10 @@
 <form name="assistControls" novalidate>
   
   <!-- Show statistics, not including assists -->
-  <div ng-repeat="stat in selected.stats | filter:{type:'!assist'} | orderBy:'time'">
+  <div ng-repeat="stat in selected.stats 
+    | filter:{type:'!assist'} 
+    | orderBy:'time'"
+  >
     <div class="list-group-item">
       {{stat.time}}{{stat.extraTime ? "+"+stat.extraTime : ''}}&apos;
       <i ng-class="statistics.getIcon(stat.type)"></i>
@@ -10,7 +13,9 @@
 
       <!-- For goals show button to add assists -->
       <div class="pull-right action-buttons">
-        <a href="#" ng-if="stat.type === 'goal'" ng-click="showAssistControls(stat)">
+        <a href="#" ng-if="stat.type === 'goal'" 
+          ng-click="showAssistControls(stat)"
+        >
           <span class="fa fa-user-plus"></span>
         </a>
         <a href="#" ng-click="deleteStat(stat)">
@@ -41,8 +46,9 @@
           <div class="input-group-addon">
             <span class="fa fa-user-plus"></span>
           </div>
-            <!-- Both ng-repeat and ng-if create new scope.
-             To access the parent scope we then need $parent.$parent -->
+          
+          <!-- Both ng-repeat and ng-if create new scope.
+           To access the parent scope we then need $parent.$parent -->
           <input type="text" 
             name="assistP" 
             ng-model="$parent.$parent.assistPlayer" 
@@ -55,6 +61,7 @@
             class="form-control" 
             required>
           </input>
+          
           <span class="input-group-btn">
             <button class="btn btn-default" 
               type="button" 
@@ -64,6 +71,7 @@
               <span class="fa fa-plus"></span>
             </button>
           </span>
+
         </ng-form>
       </div>
     </div>

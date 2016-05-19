@@ -73,10 +73,13 @@
         "playerId": $scope.assistPlayer._id,
         "playerName": $scope.assistPlayer.name
       };
-      console.log($scope.assistPlayer);
 
       // Send to server
       $scope.postStat(newAssist);
+
+      // Clear assist controls
+      $scope.assistForGoal = null;
+      $scope.assistPlayer = null;
     };
 
     //////////////////////////////////////////////////////
@@ -119,10 +122,15 @@
     /////////////////////////////////////////////////////
     //
     // Show assisting player search for given goal.
+    // Hide controls if pressed again.
     //
     /////////////////////////////////////////////////////
     $scope.showAssistControls = function(goal) {
-      $scope.assistForGoal = goal._id;
+      if($scope.assistForGoal === goal._id) {
+        $scope.assistForGoal = null;
+      } else {
+        $scope.assistForGoal = goal._id;
+      }
     };
   });
 
