@@ -5,11 +5,12 @@
     <label class="btn btn-primary" ng-model="statType" uib-btn-radio="'goal'">Goal</label>
     <label class="btn btn-warning" ng-model="statType" uib-btn-radio="'warning'">Warning</label>
     <label class="btn btn-danger" ng-model="statType" uib-btn-radio="'penalty'">Penalty</label>
+    <label class="btn btn-default" ng-model="statType" uib-btn-radio="'opponent goal'">Opponent goal</label>
   </div>
-  <!-- Goal controls -->
+  <!-- Stat input controls-->
   <input type="text" name="statTime" ng-model="statTime" ng-model-options="{debounce: 250}" ng-pattern="statTimeRegex" class="form-control" placeholder="Game time in minutes. For example 20 or 45+2" required></input>
   <!-- select player -->
-  <input type="text" name="player" ng-model="player" uib-typeahead="player as player.name for player in selected.players | filter:$viewValue | limitTo:8" typeahead-editable="false" placeholder="Type player name" class="form-control" required></input>
-  <button type="button" class="btn btn-block btn-default" ng-disabled="statControls.$invalid" ng-click="addGoal()">Add {{statType}}</button>
+  <input type="text" name="player" ng-hide="statType === 'opponent goal'" ng-model="player" uib-typeahead="player as player.name for player in selected.players | filter:$viewValue | limitTo:8" typeahead-editable="false" placeholder="Type player name" class="form-control" ng-required="statType !== 'opponent goal'"></input>
+  <button type="button" class="btn btn-block btn-default" ng-disabled="statControls.$invalid" ng-click="addStat()">Add {{statType}}</button>
 </div>
 </form>

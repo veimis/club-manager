@@ -1,10 +1,10 @@
 <div class="list-group">
 <form name="assistControls" novalidate>
-  <!-- Show statistics, no including assists -->
+  <!-- Show statistics, not including assists -->
   <div ng-repeat="stat in selected.stats | filter:{type:'!assist'} | orderBy:'time'">
     <div class="list-group-item">
       {{stat.time}}{{stat.extraTime ? "+"+stat.extraTime : ''}}&apos;
-      <i ng-class="getStatIcon(stat.type)"></i>
+      <i ng-class="statistics.getIcon(stat.type)"></i>
       : {{stat.playerName}}
       <div class="pull-right action-buttons">
         <a href="#" ng-if="stat.type === 'goal'" ng-click="showAssistControls(stat)"><span class="fa fa-user-plus"></span></a>
