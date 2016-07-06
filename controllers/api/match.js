@@ -57,6 +57,7 @@ module.exports = function(pb) {
     const ajv = new Ajv();
 
     // Get schema
+    // TODO: Ajv caches the schema, but we are reading the file everytime
     fs.readFile('plugins/club-manager/schemas/saveStats.json', function(err, schemaBuffer) {
       const schema = JSON.parse(schemaBuffer);
       const valid = ajv.validate(schema, data);
