@@ -1,4 +1,4 @@
-// Controller module for a team page showing the players of the club
+// Controller module for a players page showing the players of the club
 
 // Dependencies
 const cmTeam = require('../lib/team.js');
@@ -8,11 +8,11 @@ module.exports = function(pb) {
   var util = pb.util;
   
   // Create the controller
-  function TeamController(){};
+  function PlayersController(){};
   
   // Inherits from base controller: accessors for template service, 
   // localization service, request and response handlers.
-  util.inherits(TeamController, pb.BaseController);
+  util.inherits(PlayersController, pb.BaseController);
 
   ///////////////////////////////////////////////////////////////////
   // Render team template
@@ -20,7 +20,7 @@ module.exports = function(pb) {
   //  will result in an error page.
   // cb = callback(result)
   ///////////////////////////////////////////////////////////////////
-  TeamController.prototype.render = function(cb) {
+  PlayersController.prototype.render = function(cb) {
     var self = this;
     var cos = new pb.CustomObjectService();
     var ms = new pb.MediaService();
@@ -30,7 +30,7 @@ module.exports = function(pb) {
       self.ts.registerLocal('account_buttons', new pb.TemplateValue(accountButtons, false));
       
       // Query all teams
-      cmTeam.getAll(cos, util, ms, function(err, data) {
+      cmTeam.getAll(self.query.team, cos, util, ms, function(err, data) {
         if(util.isError(err)) {
           throw err;
         }
@@ -57,7 +57,7 @@ module.exports = function(pb) {
         }); 
         
         // Load team template
-        self.ts.load('team', function(err, result) {
+        self.ts.load('players', function(err, result) {
           if(util.isError(err)) {
             throw err;
           }
@@ -73,11 +73,11 @@ module.exports = function(pb) {
   // controllers folder during initialization to regiser handlers
   // for the routes.
   ///////////////////////////////////////////////////////////////////
-  TeamController.getRoutes = function(cb) {
+  PlayersController.getRoutes = function(cb) {
     var routes = [
       {
         method: 'get',
-        path: '/club-manager/team',
+        path: '/club-manager/players',
         auth_required: false,
         content_type: 'text/html'
         // handler is not defined, defaults to render()
@@ -90,7 +90,7 @@ module.exports = function(pb) {
   // Get navigation
   // Copy from pencilblue/controllers/index.js
   ///////////////////////////////////////////////////////////////////
-  TeamController.prototype.getNavigation = function(cb) {
+  PlayersController.prototype.getNavigation = function(cb) {
     var options = {
         currUrl: this.req.url,
         session: this.session,
@@ -107,6 +107,6 @@ module.exports = function(pb) {
     });
   };
 
-  return TeamController;
+  return PlayersController;
 };
 
