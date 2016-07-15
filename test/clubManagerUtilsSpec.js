@@ -12,6 +12,7 @@ describe('Club manager utilities', function(){
       expect(cmUtils).to.have.a.property('fetchChildren');
       expect(cmUtils).to.have.a.property('getCustomObjectTypeId');
       expect(cmUtils).to.have.a.property('defaultTemplateValues');
+      expect(cmUtils).to.have.a.property('getNavigation');
     });
   });
 });
