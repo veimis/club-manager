@@ -47,19 +47,19 @@ module.exports = function(pb) {
 		var cos = new pb.CustomObjectService();
 
     if(self.query.name) {
-	  async.waterfall([
-	    function(cb) {
-          cmSeason.loadByName(self.query.name, cos, util, cb);
-		},
-		function(season, cb) {
-		  cmMatch.loadBySeason(season._id, cos, util, cb);
-		},
-		function(matches, cb) {
-		  getStats(self, matches, new pb.DAO(), util, cb);
-		}
-	  ], function(err, matches) {
-	    renderSeason(self, matches, util, cmUtils, cb);
-	  });
+      async.waterfall([
+        function(cb) {
+            cmSeason.loadByName(self.query.name, cos, util, cb);
+      },
+      function(season, cb) {
+        cmMatch.loadBySeason(season._id, cos, util, cb);
+      },
+      function(matches, cb) {
+        getStats(self, matches, new pb.DAO(), util, cb);
+      }
+      ], function(err, matches) {
+        renderSeason(self, matches, util, cmUtils, cb);
+      });
     }
     else
     {

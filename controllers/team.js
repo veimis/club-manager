@@ -3,6 +3,7 @@
 // Dependencies
 const cmTeam = require('../lib/team.js');
 const cmSeason = require('../lib/season.js');
+const async = require('async');
 
 module.exports = function(pb) {
   const util = pb.util;
@@ -45,32 +46,38 @@ module.exports = function(pb) {
       throw new Error("Team is not specified in the url query");
     }
 
-    const angularData = {
-      team: self.query.team
-    };
-
-    // Register angular objects for the template
-    const angularObjects = pb.ClientJs.getAngularObjects(angularData);
-    self.ts.registerLocal('angular_objects', new pb.TemplateValue(angularObjects, false));
-    
-    // Register angular controller 
-    var ok = self.ts.registerLocal('angular', function(flag, cb) {
-      var angularData = pb.ClientJs.getAngularController({}, ['ngSanitize']);
-      cb(null, angularData);
-    }); 
-
-    // Query seasons by team.
     const cos = new pb.CustomObjectService();
-    cmTeam.getId(cos, util, self.query.team, function(err, teamId) {
-      cmSeason.getByTeam(cos, util, teamId.toString(), function(err, seasons) {
-        // Load team template
-        self.ts.load('team', function(err, result) {
-          if(util.isError(err)) {
-            throw err;
-          }
-          cb({content: result});
-        });
-      });
+    async.waterfall([
+      function(cb) {
+        cmTeam.getId(cos, util, self.query.team, cb);
+      },
+      function(teamId, cb) {
+        cmSeason.getByTeam(cos, util, teamId.toString(), cb); 
+      }
+    ], function(err, seasons) {
+      const angularData = {
+        team: self.query.team,
+        seasons: seasons
+      };
+
+      // Register angular objects for the template
+      const angularObjects = pb.ClientJs.getAngularObjects(angularData);
+      self.ts.registerLocal('angular_objects', new pb.TemplateValue(angularObjects, false));
+      
+      // Register angular controller 
+      var ok = self.ts.registerLocal('angular', function(flag, cb) {
+        var angularData = pb.ClientJs.getAngularController({}, ['ngSanitize']);
+        cb(null, angularData);
+      }); 
+
+
+      // Load team template
+      self.ts.load('team', function(err, result) {
+        if(util.isError(err)) {
+          throw err;
+        }
+        cb({content: result});
+      }); 
     });
   };
   
