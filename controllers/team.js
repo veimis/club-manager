@@ -3,6 +3,7 @@
 // Dependencies
 const cmTeam = require('../lib/team.js');
 const cmSeason = require('../lib/season.js');
+const cmMatch = require('../lib/match.js');
 const async = require('async');
 
 module.exports = function(pb) {
@@ -50,10 +51,7 @@ module.exports = function(pb) {
       articles: function(cb) {
         self.getArticles(cb);
       },
-      matches: function(cb) {
-        self.getMatches(cb);
-      },
-      seasons: function(cb) {
+      clubManagerData: function(cb) {
         const cos = new pb.CustomObjectService();
         
         // Get seasons linked to the given team.
@@ -63,20 +61,23 @@ module.exports = function(pb) {
           },
           function(teamId, waterfallCb) {
             cmSeason.getByTeam(cos, util, teamId.toString(), waterfallCb); 
+          },
+          function(seasons, waterfallCb) {
+            self.getMatches(seasons, cos, waterfallCb);
           }
-        ], function(err, seasons) {
-          cb(err, seasons); // parallel callback
+        ], function(err, data) {
+          cb(err, data); // async.parallel callback
         });
       }
     }, function(err, results) {
       // Process data and load template.
-      console.log(results.matches);
-      
       const angularData = {
         team: self.query.team,
-        seasons: results.seasons,
-        articles: results.articles
+        seasons: results.clubManagerData.seasons,
+        articles: results.articles,
+        matches: results.clubManagerData.allMatches
       };
+      console.log(angularData.matches);
 
       // Register angular objects for the template
       const angularObjects = pb.ClientJs.getAngularObjects(angularData);
@@ -118,8 +119,26 @@ module.exports = function(pb) {
   // Query latest match reports
   // 
   ////////////////////////////////////////////////////////////////////
-  TeamController.prototype.getMatches = function(cb) {
-    cb(null);
+  TeamController.prototype.getMatches = function(seasons, cos, cb) {
+    const results = {
+        seasons: seasons,
+        allMatches: []
+      };
+
+    // Get matches for each season
+    async.each(seasons, function(season, taskCallback) {
+      cmMatch.loadBySeason(season._id, cos, util, function(err, matches) {
+        if(!util.isError(err)) {
+          // Nodejs is single threaded, only i/o calls to database 
+          // are executed in parallel -> no problem handling the results 
+          // variable.
+          results.allMatches = results.allMatches.concat(matches);
+        }
+        taskCallback(err);
+      });
+    }, function(error) {
+      cb(error, results);
+    });
   }
   
   return TeamController;
