@@ -46,18 +46,36 @@ module.exports = function(pb) {
       throw new Error("Team is not specified in the url query");
     }
 
-    const cos = new pb.CustomObjectService();
-    async.waterfall([
-      function(cb) {
-        cmTeam.getId(cos, util, self.query.team, cb);
+    async.parallel({
+      articles: function(cb) {
+        self.getArticles(cb);
       },
-      function(teamId, cb) {
-        cmSeason.getByTeam(cos, util, teamId.toString(), cb); 
+      matches: function(cb) {
+        self.getMatches(cb);
+      },
+      seasons: function(cb) {
+        const cos = new pb.CustomObjectService();
+        
+        // Get seasons linked to the given team.
+        async.waterfall([
+          function(waterfallCb) {
+            cmTeam.getId(cos, util, self.query.team, waterfallCb);
+          },
+          function(teamId, waterfallCb) {
+            cmSeason.getByTeam(cos, util, teamId.toString(), waterfallCb); 
+          }
+        ], function(err, seasons) {
+          cb(err, seasons); // parallel callback
+        });
       }
-    ], function(err, seasons) {
+    }, function(err, results) {
+      // Process data and load template.
+      console.log(results.matches);
+      
       const angularData = {
         team: self.query.team,
-        seasons: seasons
+        seasons: results.seasons,
+        articles: results.articles
       };
 
       // Register angular objects for the template
@@ -80,6 +98,29 @@ module.exports = function(pb) {
       }); 
     });
   };
+
+  ////////////////////////////////////////////////////////////////////
+  //
+  // Query latest articles
+  // 
+  ////////////////////////////////////////////////////////////////////
+  TeamController.prototype.getArticles = function(cb) {
+    const options = {
+      order: {'publish_date': -1},
+      limit: 5
+    };
+    const articleService = new pb.ArticleServiceV2();
+    articleService.getAll(options, cb);
+  }
+
+  ////////////////////////////////////////////////////////////////////
+  // 
+  // Query latest match reports
+  // 
+  ////////////////////////////////////////////////////////////////////
+  TeamController.prototype.getMatches = function(cb) {
+    cb(null);
+  }
   
   return TeamController;
 };
