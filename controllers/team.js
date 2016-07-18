@@ -70,39 +70,41 @@ module.exports = function(pb) {
         });
       }
     }, function(err, results) {
-      // Process data and load template.
-      const angularData = {
-        team: self.query.team,
-        seasons: results.clubManagerData.seasons,
-        articles: results.articles,
-        matches: results.clubManagerData.allMatches
-      };
-      console.log(angularData.matches);
+      self.orderPosts(results.articles, results.clubManagerData.allMatches, function(err, data) {
 
-      // Register angular objects for the template
-      const angularObjects = pb.ClientJs.getAngularObjects(angularData);
-      self.ts.registerLocal('angular_objects', new pb.TemplateValue(angularObjects, false));
-      
-      // Register angular controller 
-      var ok = self.ts.registerLocal('angular', function(flag, cb) {
-        var angularData = pb.ClientJs.getAngularController({}, ['ngSanitize']);
-        cb(null, angularData);
-      }); 
+        // Process data and load template.
+        const angularData = {
+          team: self.query.team,
+          seasons: results.clubManagerData.seasons,
+          posts: data
+        };
+
+        // Register angular objects for the template
+        const angularObjects = pb.ClientJs.getAngularObjects(angularData);
+        self.ts.registerLocal('angular_objects', new pb.TemplateValue(angularObjects, false));
+        
+        // Register angular controller 
+        var ok = self.ts.registerLocal('angular', function(flag, cb) {
+          var angularData = pb.ClientJs.getAngularController({}, ['ngSanitize']);
+          cb(null, angularData);
+        }); 
 
 
-      // Load team template
-      self.ts.load('team', function(err, result) {
-        if(util.isError(err)) {
-          throw err;
-        }
-        cb({content: result});
-      }); 
+        // Load team template
+        self.ts.load('team', function(err, result) {
+          if(util.isError(err)) {
+            throw err;
+          }
+          cb({content: result});
+        }); 
+      });
     });
   };
 
   ////////////////////////////////////////////////////////////////////
   //
   // Query latest articles
+  // cb = callback(error, data)
   // 
   ////////////////////////////////////////////////////////////////////
   TeamController.prototype.getArticles = function(cb) {
@@ -117,6 +119,9 @@ module.exports = function(pb) {
   ////////////////////////////////////////////////////////////////////
   // 
   // Query latest match reports
+  // seasons: List of season objects.
+  // cos: pencilblue custom object service.
+  // cb = callback(error, data)
   // 
   ////////////////////////////////////////////////////////////////////
   TeamController.prototype.getMatches = function(seasons, cos, cb) {
@@ -140,6 +145,46 @@ module.exports = function(pb) {
       cb(error, results);
     });
   }
+
+  ////////////////////////////////////////////////////////////////////
+  //
+  // Get latest 5 posts from articles and match reports.
+  // articles: List of article objects
+  // matches: List of match report objects.
+  // cb = callback(error, data)
+  //
+  ////////////////////////////////////////////////////////////////////
+  TeamController.prototype.orderPosts = function(articles, matches, cb) {
+    // Sort matches and articles by date using Schwartzian transform
+    // https://en.wikipedia.org/wiki/Schwartzian_transform
+    // #1 Compute sort keys
+    var posts = [].concat(articles, matches);
+    for(var i = 0; i < posts.length; ++i) {
+      var post = posts[i];
+      // Use create timestamp as sort key. 
+      // Currently match report don't have publish_date field.
+      posts[i] = [].concat(post.created, post);
+    }
+
+    // #2 Sort posts using the computed key
+    posts.sort(function(obj1, obj2) {
+      return obj1[0] - obj2[0];
+    });
+
+    // Reduce results to 5
+    const RESULT_COUNT = 5;
+    if(posts.length > RESULT_COUNT) {
+      const results = posts.slice(0, RESULT_COUNT);
+      posts = results;
+    }
+
+    // #3 Remove the computed key and return sorted array
+    for(i = 0; i < posts.length; ++i) {
+      posts[i] = posts[i][1];
+    }
+
+    cb(null, posts);
+  };
   
   return TeamController;
 };
