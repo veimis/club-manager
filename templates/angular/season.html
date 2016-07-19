@@ -4,7 +4,10 @@ angular.module('pencilblueApp')
     $scope.statistics = statistics;
 
     $scope.match = $scope.matches.length > 0 ? $scope.matches[0] : undefined;
-
+    // Show match details on the page
+    $scope.showMatch = function(match) {
+      $scope.match = match;
+    };
   });
 </script>
 
