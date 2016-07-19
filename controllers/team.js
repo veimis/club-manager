@@ -4,6 +4,7 @@
 const cmTeam = require('../lib/team.js');
 const cmSeason = require('../lib/season.js');
 const cmMatch = require('../lib/match.js');
+const cmMatchStats = require('../lib/match_statistics.js');
 const async = require('async');
 
 module.exports = function(pb) {
@@ -133,13 +134,24 @@ module.exports = function(pb) {
     // Get matches for each season
     async.each(seasons, function(season, taskCallback) {
       cmMatch.loadBySeason(season._id, cos, util, function(err, matches) {
+        // If there is no error, get match stats and set results
         if(!util.isError(err)) {
-          // Nodejs is single threaded, only i/o calls to database 
-          // are executed in parallel -> no problem handling the results 
-          // variable.
-          results.allMatches = results.allMatches.concat(matches);
+          async.each(matches, function(match, eachCb) {
+            cmMatchStats.loadByMatch(match._id, new pb.DAO(), util, function(err, stats) {
+              match.stats = stats;
+              eachCb();
+            });
+          }, function(err) {
+            // Nodejs is single threaded, only i/o calls to database 
+            // are executed in parallel -> no problem handling the results 
+            // variable.
+            results.allMatches = results.allMatches.concat(matches);
+            taskCallback(err);
+          });
         }
-        taskCallback(err);
+        else {
+          taskCallback(err);
+        }
       });
     }, function(error) {
       cb(error, results);
@@ -168,7 +180,8 @@ module.exports = function(pb) {
 
     // #2 Sort posts using the computed key
     posts.sort(function(obj1, obj2) {
-      return obj1[0] - obj2[0];
+      // obj2 - obj1 for descending order (instead of obj1 - obj2).
+      return obj2[0] - obj1[0];
     });
 
     // Reduce results to 5
