@@ -5,6 +5,12 @@
 
 ### Setup ###
 
+### Contribution guidelines ###
+
+### TODO ###
+
+###### Setup ######
+
 - [ ] Summary of set up
 - [ ] Configuration
 - [ ] Dependencies
@@ -12,7 +18,8 @@
 - [ ] How to run tests
 - [ ] Deployment instructions
 
-### Contribution guidelines ###
+
+###### Contribution guidelines ######
 
 - [ ] Writing tests
 - [ ] Code review
@@ -21,4 +28,5 @@
 ### Who do I talk to? ###
 
 [veimis](https://github.com/veimis)@github
+
 [veimis](https://twitter.com/veimis)@twitter
