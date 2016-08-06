@@ -5,6 +5,12 @@
 
 ### Setup ###
 
+* [Install Pencilblue](https://github.com/pencilblue/pencilblue/wiki/Quickstart-Guide)
+* Clone club-manager into the Pencilblue plugins folder.
+  * cd plugins/
+  * git clone https://github.com/veimis/club-manager.git
+* Install plugin from Pencilblue plugin management.
+
 ### Contribution guidelines ###
 
 ### TODO ###
