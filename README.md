@@ -17,7 +17,7 @@
 
 ###### Setup ######
 
-- [ ] Summary of set up
+- [x] Summary of set up
 - [ ] Configuration
 - [ ] Dependencies
 - [ ] Database configuration
