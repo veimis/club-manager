@@ -29,7 +29,7 @@
           ng-repeat="assist in $parent.selected.stats 
             | filter:{type:'assist', goalId: stat._id}"
         >
-          <i class="fa fa-user"></i>
+          <i class="fa fa-user-plus"></i>
           {{assist.playerName}}
           <a href="#" ng-click="deleteStat(assist)">
             <span class="fa fa-times"></span>
