@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-md-12">
       <input type="text" ng-model="selected" 
-        uib-typeahead="match as match.title for match in matches 
+        uib-typeahead="match as match.name for match in matches 
           | filter:$viewValue | limitTo:8" 
         placeholder="Select match" 
         class="form-control"
